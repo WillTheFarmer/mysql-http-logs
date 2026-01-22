@@ -10,7 +10,7 @@ This is a fast, reliable processing application with detailed logging and two st
 
 First stage is performed in `LOAD DATA LOCAL INFILE` statements with data-driven "log format" selection of LOAD settings and load_ staging tables.
 
-Second stage is performed in parsing modules: `parse_access_apache`, `parse_access_nginx`, `parse_error_apache`, `parse_error_nginx`
+Second stage is performed in MySQL modules: `parse_access_apache`, `parse_access_nginx`, `parse_error_apache`, `parse_error_nginx`
 
 HTTP Access and Error data normalization and import is done in MySQL modules: `import_access_apache, import_access_nginx, import_error_apache, import_error_nginx`
 
