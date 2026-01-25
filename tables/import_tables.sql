@@ -50,8 +50,7 @@ CREATE TABLE `import_process` (
   errorCount INT DEFAULT NULL,
   processSeconds INT DEFAULT NULL,
   started DATETIME NOT NULL DEFAULT NOW(),
-  completed DATETIME DEFAULT NULL,
-  comments VARCHAR(100) DEFAULT NULL
+  completed DATETIME DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Python module or MySQL stored procedure with execution totals. If completed column is NULL process failed. import_error table for details.';
 -- drop table -----------------------------------------------------------
 DROP TABLE IF EXISTS `import_server`;
