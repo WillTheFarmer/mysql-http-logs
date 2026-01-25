@@ -6,7 +6,7 @@ buildDate = datetime.today().strftime('%Y%m%d')
 # change the name of the script file create can be done here.
 # build date YYMMDD is added to script file name by default 
 
-scriptFile = "./http_logs_schema_" + buildDate +".sql"
+scriptFile = "./http_logs_" + buildDate +".sql"
 
 print(f"Building Script file : {scriptFile}... Please hold.")
 

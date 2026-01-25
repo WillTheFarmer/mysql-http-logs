@@ -1,0 +1,19 @@
+
+# Visual Studio Code
+.vscode
+snippets
+
+# Installer logs
+.log
+
+# Environments
+.env
+
+# Ignore test code
+/tests/
+
+# Ignore build code
+/build/
+
+# Ignore dev code
+/dev/
