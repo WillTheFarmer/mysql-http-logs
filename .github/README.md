@@ -1,7 +1,7 @@
 # Database designed for HTTP log data analysis
 ![Entity Relationship Diagram](./images/entity_relationship_diagram.png)
 ## This repository contains all individual DDL and build scripts
-Every script and build file used in database application development is here. Individual Function and Procedure files make applying modifications much simplier. The Python build script assembles hundreds of SQL filess together into the single `build_http_logs_schema.sql` file that creates the entire MySQL schema and is included in the Python application repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql).
+Every script and build file used in database application development is here. Individual Function and Procedure files make applying modifications much simplier. The Python build script assembles hundreds of SQL filess together into the single `create_http_logs.sql` file that creates the entire MySQL schema and is included in the Python application repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql).
 
 ## Database runs on MySQL & MariaDB
 Python handles polling of log file folders and executing Database LOAD DATA, Stored Procedures, Stored Functions and SQL Statements. Python drives the application but MySQL or MariaDB does all Data Manipulation & Processing.
