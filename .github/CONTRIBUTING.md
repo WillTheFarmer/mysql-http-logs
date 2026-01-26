@@ -4,6 +4,6 @@ To contribute Ideas or Comments please create a `New discussion` under repositor
 
 If you find this code useful please contribute a :star: to the repository.
 
-If you find this application valuable to your database application development monetary contributions are appreciated. Repository has my ***Buy Me a Coffee*** :coffee: link.
+If you find this repository valuable to your database application development monetary contributions are appreciated. Repository has my ***Buy Me a Coffee*** :coffee: link.
 
 Monetary :moneybag: contributions made will encourage [Web Interface](https://github.com/WillTheFarmer/mysql-to-apache-echarts) repository development continuation for this MySQL or MariaDB schema populated by [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql) repository.
