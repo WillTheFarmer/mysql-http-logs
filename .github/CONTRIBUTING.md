@@ -2,8 +2,6 @@ To contribute Issues or Errors found using application please create a `New issu
 
 To contribute Ideas or Comments please create a `New discussion` under repository `Discussions` tab.
 
-To contribute HTTP Access or Error Log Formats commonly used that application should process please start `New discussion`.
-
 If you find this code useful please contribute a :star: to the repository.
 
 If you find this application valuable to your log collection system monetary contributions are appreciated. Repository has my ***Buy Me a Coffee*** :coffee: link.
