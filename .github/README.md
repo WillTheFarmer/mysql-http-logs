@@ -4,7 +4,7 @@
 Every script and build file used in database application development is here. Individual Function and Procedure files make applying modifications much simplier. The Python build script assembles hundreds of SQL filess together into the single `create_http_logs.sql` file that creates the entire MySQL schema and is included in the Python application repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql).
 
 ## Database runs on MySQL & MariaDB
-Python handles polling of log file folders and executing Database LOAD DATA, Procedures, Functions and SQL Statements. Python drives the application but MySQL or MariaDB does all Data Manipulation & Processing.
+Python handles polling of log file folders and executing database LOAD DATA, Procedures, Functions and SQL Statements. Python drives the application but MySQL or MariaDB does all Data Manipulation & Processing.
 
 This is a fast, reliable processing application with detailed logging and two stages of data parsing.
 
@@ -30,5 +30,5 @@ The Python application repository is [httpLogs2MySQL](https://github.com/willthe
 Multiple Access and Error logs and formats can be loaded, parsed and imported along with User Agent parsing and IP Address Geolocation retrieval processes within a single "Import Load" execution. 
 
 ## Visual Interface App
-[MySQL2ApacheECharts](https://github.com/willthefarmer/mysql-to-apache-echarts) is a ***visualization tool*** for the Database Schema currently under development. The Web interface consists of [Express](https://github.com/expressjs/express) web application frameworks with [W2UI](https://github.com/vitmalina/w2ui) drill-down data grids for Data Point Details 
+in my development queue [MySQL2ApacheECharts](https://github.com/willthefarmer/mysql-to-apache-echarts) is a ***visualization tool*** for the database schema. The Web interface consists of [Express](https://github.com/expressjs/express) web application frameworks with [W2UI](https://github.com/vitmalina/w2ui) drill-down data grids for Data Point Details 
 & [Apache ECharts](https://github.com/apache/echarts) frameworks for Data Visualization.
