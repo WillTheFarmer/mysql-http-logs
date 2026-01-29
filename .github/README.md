@@ -9,21 +9,23 @@ NGINX Stored Procedures are copies of Apache Stored Procedures stripped for Comb
 
 I stripped the other format code as starting point. From documentation I read NGINX standard is same as Apache combined. I have not not examined NGINX data yet.
 
-The Apache and NGINX code demonstrates how to incorporate without code modification of current processes.
+Thoroughly researched and tested all Apache log formats. I read documentation and online sources. I have not done that for NGINX yet.
+
+***Repository NGINX files are standard access and error formats from new NGINX server*** 
+
+NGINX log files in `/data/nginx_combined/` and `/data/nginx_error/` are from new NGINX server.
+
+MySQL procedural files are copies of Apache code. Then stripped to code required to process `combined` format. 
+
+`parse_access_nginx.sql` started as copy of `parse_access_apache.sql`
+
+`import_access_nginx.sql` started as copy of `import_access_apache.sql`
+
+`parse_error_nginx.sql` started as copy of `parse_error_apache.sql`
+
+`import_error_nginx.sql` started as copy of `import_error_apache.sql`
 
 Until Ground Hog Day I am full-time on Python Code cleanup and NGINX formats. When starting project I thoroughly researched and tested all Apache log formats. I have not done any of that for NGINX other than read documentation. The repository data NGINX log files are from any NGINX server. 
-
-MySQL stored procedure code for NGINX are a stripped down copy of Apache code. 
-
-Only code for combined. I stripped out other formats. 
-
-`parse_acces_nginx.sql`, `import_access_nginx.sql`, `parse_error_nginx.sql`, `import_error_nginx.sql`
-
-are copies of:
-
-`parse_acces_apache.sql`, `parse_error_apache.sql`, `import_access_apache.sql`, `import_error_apache.sql`
-
-Anyone with NGINX log files who wants to contribute NGINX log format knowledge or import data results would be helpful and welcomed.
 
 Creates the MySQL schema included in repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql).
 
