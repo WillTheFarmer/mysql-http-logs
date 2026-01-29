@@ -5,6 +5,10 @@ All SQL files and Python build file used in schema database application developm
 
 The Python build script assembles all SQL script files together into the single `create_http_logs.sql` file.
 
+NGINX Stored Procedures are copies of Apache Stored Procedures stripped for Combined `combined` only - `FIND_IN_SET(in_processName, "csv2mysql,vhost,combined") = 0`. 
+
+I stripped the other format code as starting point. From documentation I read NGINX standard is same as Apach combined. I have not not examined NGINX data yet.
+
 Creates the MySQL schema included in repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql).
 
 ### 2. Database
