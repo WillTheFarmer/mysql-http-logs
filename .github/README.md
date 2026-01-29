@@ -1,6 +1,6 @@
 # Database designed for HTTP log data analysis
 ![Entity Relationship Diagram](./images/entity_relationship_diagram.png)
-## DDL scripts for tables, indexes, views, functions procedures and constraints
+## DDL for tables, indexes, views, function, procedures & constraints
 All SQL scripts and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simplier.
 
 The Python build script assembles hundreds of SQL filess together into the single `create_http_logs.sql` file.
