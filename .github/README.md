@@ -1,9 +1,9 @@
 # Database designed for HTTP log data analysis
 ![Entity Relationship Diagram](./images/entity_relationship_diagram.png)
 ## DDL for tables, indexes, views, function, procedures & constraints
-All SQL scripts and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simplier.
+All SQL files and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simplier in Visual Studio Code.
 
-The Python build script assembles all SQL files together into the single `create_http_logs.sql` file.
+The Python build script assembles all SQL script files together into the single `create_http_logs.sql` file.
 
 Creates the MySQL schema included in repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql).
 
