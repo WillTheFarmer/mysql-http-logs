@@ -12,7 +12,6 @@ Access Logs:
 
 `parse_access_nginx.sql`, `import_access_nginx.sql` are copies of `parse_acces_apache.sql`, `import_access_apache.sql`
 
-
 Error Logs:
 
 `parse_error_nginx.sql`, `import_error_nginx.sql` are copies of `parse_acces_apache.sql`, `import_access_apache.sql`
