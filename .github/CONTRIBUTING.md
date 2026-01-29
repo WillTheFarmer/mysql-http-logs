@@ -14,6 +14,14 @@ Anyone with NGINX log files who wants to contribute NGINX log format knowledge o
 
 Anyone with MySQL procedural and NGINX log format knowledge would be helpful.
 
+If you find this code useful please contribute a :star: to the repository.
+
+To contribute Issues or Errors found using application please create a `New issue` under repository `Issues` tab. 
+
+To contribute Ideas or Comments please create a `New discussion` under repository `Discussions` tab.
+
+To contribute HTTP Access or Error Log Formats commonly used that application should process please start `New discussion`.
+
 If you find this repository valuable to your database application development monetary contributions are appreciated. Repository has my ***Buy Me a Coffee*** :coffee: link.
 
 Monetary :moneybag: contributions made will encourage [Web Interface](https://github.com/WillTheFarmer/mysql-to-apache-echarts) repository development continuation for this MySQL or MariaDB schema populated by [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql) repository.
