@@ -14,7 +14,7 @@ BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION 
   BEGIN
     GET DIAGNOSTICS CONDITION 1 e1 = MYSQL_ERRNO, e2 = MESSAGE_TEXT, e3 = RETURNED_SQLSTATE; 
-    CALL errorProcess('importLoadID', e1, e2, e3, 'http_logs', 'logs2mysql.py', importLoad_ID, null );
+    CALL messageProcess('importLoadID', e1, e2, e3, 'http_logs', 'logs2mysql.py', importLoad_ID, null );
   END;
   IF NOT CONVERT(in_importclient_id, UNSIGNED) = 0 THEN
     SET importclient_ID = CONVERT(in_importclient_id, UNSIGNED);

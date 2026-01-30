@@ -29,8 +29,8 @@ DROP TABLE IF EXISTS `import_load`;
 CREATE TABLE `import_load` (
   id INT AUTO_INCREMENT PRIMARY KEY,
   importclientid INT NOT NULL,
-  errorCount INT DEFAULT NULL,
-  processSeconds INT DEFAULT NULL,
+  error_count INT DEFAULT NULL,
+  process_seconds INT DEFAULT NULL,
   started DATETIME NOT NULL DEFAULT NOW(),
   completed DATETIME DEFAULT NULL,
   comments VARCHAR(100) DEFAULT NULL
@@ -43,15 +43,15 @@ CREATE TABLE `import_process` (
   importserverid INT NULL COMMENT 'record added from MySQL stored procedure. Foreign Key to ID in import_server table',
   processName VARCHAR(255) NULL COMMENT 'processID from Python config.json and "NAME" asssigned from MySQL procedure',
   moduleName VARCHAR(255) NULL COMMENT 'moduleName from Python (_file__) and "TYPE" asssigned from MySQL procedure',
-  filesFound INT DEFAULT NULL,
-  filesProcessed INT DEFAULT NULL COMMENT 'this was previously "files" column in old import_process table',
-  recordsProcessed INT DEFAULT NULL COMMENT 'this was previously "records" column in old import_process table',
-  loadsProcessed INT DEFAULT NULL COMMENT 'this was previously "loads" column in old import_process table',
-  errorCount INT DEFAULT NULL,
-  processSeconds INT DEFAULT NULL,
+  files_found INT DEFAULT NULL,
+  files_processed INT DEFAULT NULL COMMENT 'this was previously "files" column in old import_process table',
+  records_processed INT DEFAULT NULL COMMENT 'this was previously "records" column in old import_process table',
+  loads_processed INT DEFAULT NULL COMMENT 'this was previously "loads" column in old import_process table',
+  error_count INT DEFAULT NULL,
+  process_seconds INT DEFAULT NULL,
   started DATETIME NOT NULL DEFAULT NOW(),
   completed DATETIME DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Python module or MySQL stored procedure with execution totals. If completed column is NULL process failed. import_error table for details.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Python module or MySQL stored procedure with execution totals. If completed column is NULL process failed. import_message table for details.';
 -- drop table -----------------------------------------------------------
 DROP TABLE IF EXISTS `import_server`;
 -- create table ---------------------------------------------------------
@@ -95,18 +95,18 @@ CREATE TABLE `import_file_format` (
   added DATETIME NOT NULL DEFAULT NOW()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Table contains import file formats imported by application. These values are inserted in schema DDL script. This table is only added for reporting purposes.';
 -- drop table -----------------------------------------------------------
-DROP TABLE IF EXISTS `import_error`;
+DROP TABLE IF EXISTS `import_message`;
 -- create table ---------------------------------------------------------
-CREATE TABLE `import_error` (
+CREATE TABLE `import_message` (
   id INT AUTO_INCREMENT PRIMARY KEY,
   importloadid INT DEFAULT NULL,
   importprocessid INT DEFAULT NULL,
-  module VARCHAR(300) NULL,
-  mysql_errno SMALLINT UNSIGNED NULL,
+  module_name VARCHAR(300) NULL,
+  message_code SMALLINT UNSIGNED NULL,
   message_text VARCHAR(1000) NULL,
   returned_sqlstate VARCHAR(250) NULL,
   schema_name VARCHAR(64) NULL,
   catalog_name VARCHAR(64) NULL,
   comments VARCHAR(350) NULL,
   added DATETIME NOT NULL DEFAULT NOW()
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='Application Error log. Any errors that occur in MySQL processes will be here. This is a MyISAM engine table to avoid TRANSACTION ROLLBACKS. Always look in this table for problems!';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='Application Message log. Any errors that occur in MySQL processes will be here. Process messages or warnings can be here. This is a MyISAM engine table to avoid TRANSACTION ROLLBACKS. Always look in this table for problems!';

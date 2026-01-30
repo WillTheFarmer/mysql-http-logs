@@ -1,8 +1,8 @@
 -- drop function -----------------------------------------------------------
-DROP PROCEDURE IF EXISTS `errorProcess`;
+DROP PROCEDURE IF EXISTS `messageProcess`;
 -- create function -----------------------------------------------------------
 DELIMITER //
-CREATE DEFINER = `root`@`localhost` PROCEDURE `errorProcess`
+CREATE DEFINER = `root`@`localhost` PROCEDURE `messageProcess`
   (IN in_module VARCHAR(300),
    IN in_mysqlerrno INTEGER, 
    IN in_messagetext VARCHAR(1000), 
@@ -12,9 +12,9 @@ CREATE DEFINER = `root`@`localhost` PROCEDURE `errorProcess`
    IN in_loadID INTEGER,
    IN in_processID INTEGER)
 BEGIN
-  INSERT INTO import_error 
-     (module,
-      mysql_errno,
+  INSERT INTO import_message 
+     (module_name,
+      message_code,
       message_text,
       returned_sqlstate,
       schema_name,

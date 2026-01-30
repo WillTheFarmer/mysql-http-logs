@@ -14,10 +14,10 @@ process_status=2 - process_error_import or process_access_import executed on rec
 
 import_file TABLE - record for every Access & Error file processed by Python processFiles. LOAD DATA tables have FOREIGN KEY (importfileid).
 import_load TABLE - record for every execution of Python process. Each record contains information on LogFormat log files processed. 
-import_load TABLE "completed" COLUMN - is NULL an error occurred. Refer to the import_error TABLE for error details.
+import_load TABLE "completed" COLUMN - is NULL an error occurred. Refer to the import_message TABLE for error details.
 import_process TABLE - record for every import process execution. IF IMPORT LOAD = importloadid is NOT NULL, If STORED PROCEDURE = importserverid is NOT NULL.
-import_process TABLE "completed" COLUMN - is NULL an error occurred. Refer to the import_error TABLE for error details.
-import_error TABLE - only table using ENGINE=MYISAM due to disregarding TRANSACTION ROLLBACK. Any errors in Python or MySQL recorded in table. 
+import_process TABLE "completed" COLUMN - is NULL an error occurred. Refer to the import_message TABLE for error details.
+import_message TABLE - only table using ENGINE=MYISAM due to disregarding TRANSACTION ROLLBACK. Any errors in Python or MySQL recorded in table. 
 
 CALL Commands execute each Stored Procedure for each Import Format. 'ALL' processes any unprocessed importLoadID(s) based on process_status. 
 NOTE: Each Python 'processLogs' function execution creates a new importLoadID. Every execution has a unique importLoadID value & record.

@@ -129,7 +129,7 @@ BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
       GET DIAGNOSTICS CONDITION 1 e1 = MYSQL_ERRNO, e2 = MESSAGE_TEXT, e3 = RETURNED_SQLSTATE, e4 = SCHEMA_NAME, e5 = CATALOG_NAME;
-      CALL errorProcess('import_error_apache', e1, e2, e3, e4, e5, importLoad_ID, importProcessID);
+      CALL messageProcess('import_error_apache', e1, e2, e3, e4, e5, importLoad_ID, importProcessID);
       SET processErrors = processErrors + 1;
       ROLLBACK;
     END;
@@ -361,12 +361,12 @@ INNER JOIN import_file f
   END IF;
   -- update import process table
   UPDATE import_process
-     SET recordsprocessed = records_processed,
-         filesprocessed = files_processed,
-         loadsprocessed = loads_processed,
+     SET records_processed = records_processed,
+         files_processed = files_processed,
+         loads_processed = loads_processed,
          completed = now(),
-         errorCount = processErrors,
-         processSeconds = TIME_TO_SEC(TIMEDIFF(now(), started))
+         error_count = processErrors,
+         process_seconds = TIME_TO_SEC(TIMEDIFF(now(), started))
    WHERE id = importProcessID;
   COMMIT;
   IF importLoad_ID IS NULL THEN

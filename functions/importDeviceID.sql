@@ -18,7 +18,7 @@ BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION 
   BEGIN
     GET DIAGNOSTICS CONDITION 1 e1 = MYSQL_ERRNO, e2 = MESSAGE_TEXT, e3 = RETURNED_SQLSTATE; 
-    CALL errorProcess('importdeviceID', e1, e2, e3, 'http_logs', 'logs2mysql.py', null, null);
+    CALL messageProcess('importdeviceID', e1, e2, e3, 'http_logs', 'logs2mysql.py', null, null);
   END;
   SELECT id
     INTO importDevice_ID
