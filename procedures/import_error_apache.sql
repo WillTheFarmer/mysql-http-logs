@@ -8,6 +8,9 @@ CREATE DEFINER = `root`@`localhost` PROCEDURE `import_error_apache`
   IN in_importLoadID VARCHAR(20)
 )
 BEGIN
+  -- module_name = moduleName column in import_process - to id procedure is being run
+  -- in_processName = processName column in import_process - to id procedure OPTION is being run
+  DECLARE module_name VARCHAR(255) DEFAULT 'error_import';
   -- standard variables for processes
   DECLARE e1 INT UNSIGNED;
   DECLARE e2, e3 VARCHAR(128);
@@ -137,8 +140,8 @@ BEGIN
   IF CONVERT(in_importLoadID, UNSIGNED) = 0 AND in_importLoadID != 'ALL' THEN
     SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_importLoadID. Must be convert to number or be ALL';
   END IF;
-  IF FIND_IN_SET(in_processName, "default") = 0 THEN
-    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_processName. Must be default';
+  IF FIND_IN_SET(in_processName, "python,mysql") = 0 THEN
+    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_processName. Must be python OR mysql';
   END IF;
   IF NOT CONVERT(in_importLoadID, UNSIGNED) = 0 THEN
     SET importLoad_ID = CONVERT(in_importLoadID, UNSIGNED);
@@ -149,7 +152,7 @@ BEGIN
       FROM import_process
      WHERE id = in_importLoadID;
   END IF;
-  SET importProcessID = importServerProcessID('error_import', in_processName, importLoad_ID);
+  SET importProcessID = importServerProcessID(module_name, in_processName, importLoad_ID);
   IF importLoad_ID IS NULL THEN
     SELECT COUNT(DISTINCT(f.importloadid))
       INTO loads_processed

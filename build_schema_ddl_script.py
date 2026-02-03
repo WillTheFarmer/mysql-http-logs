@@ -103,6 +103,7 @@ script_list.append({"file": "./build/combined_procedures.SQL", "header": "Proced
 script_list.append({"file": "./build/combined_views.SQL", "header": "Views below"})
 script_list.append({"file": "./data/insert_import_file_format_records.SQL", "header": "Inserts default data into app tables below"})
 script_list.append({"file": "./constraints/add_all.SQL", "header": "Indexes, Foreign Keys and Constraints for all Tables below"})
+script_list.append({"file": "./scripts/mysql_user_and_grants.SQL", "header": "user http_upload rights"})
 
 combine_list_files(script_list, scriptFile)
 

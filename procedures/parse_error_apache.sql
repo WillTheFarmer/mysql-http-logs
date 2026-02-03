@@ -8,6 +8,9 @@ CREATE DEFINER = `root`@`localhost` PROCEDURE `parse_error_apache`
   IN in_importLoadID VARCHAR(20)
 )
 BEGIN
+  -- module_name = moduleName column in import_process - to id procedure is being run
+  -- in_processName = processName column in import_process - to id procedure OPTION is being run
+  DECLARE module_name VARCHAR(255) DEFAULT 'parse_error_apache';
   -- standard variables for processes
   DECLARE e1 INT UNSIGNED;
   DECLARE e2, e3 VARCHAR(128);
@@ -78,7 +81,7 @@ BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
       GET DIAGNOSTICS CONDITION 1 e1 = MYSQL_ERRNO, e2 = MESSAGE_TEXT, e3 = RETURNED_SQLSTATE, e4 = SCHEMA_NAME, e5 = CATALOG_NAME;
-      CALL messageProcess('parse_error_apache', e1, e2, e3, e4, e5, importLoad_ID, importProcessID);
+      CALL messageProcess( module_name, e1, e2, e3, e4, e5, importLoad_ID, importProcessID);
       SET processErrors = processErrors + 1;
       ROLLBACK;
     END;
@@ -86,8 +89,8 @@ BEGIN
   IF CONVERT(in_importLoadID, UNSIGNED) = 0 AND in_importLoadID != 'ALL' THEN
     SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_importLoadID. Must be convert to number or be ALL';
   END IF;
-  IF FIND_IN_SET(in_processName, "default") = 0 THEN
-    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_processName. Must be default';
+  IF FIND_IN_SET(in_processName, "python,mysql") = 0 THEN
+    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_processName. Must be python OR mysql';
   END IF;
   IF NOT CONVERT(in_importLoadID, UNSIGNED) = 0 THEN
     SELECT importloadid 
@@ -95,7 +98,7 @@ BEGIN
       FROM import_process
      WHERE id = in_importLoadID;
   END IF;
-  SET importProcessID = importServerProcessID('error_parse', in_processName, importLoad_ID);
+  SET importProcessID = importServerProcessID( module_name, in_processName, importLoad_ID);
   IF importLoad_ID IS NULL THEN
     SELECT COUNT(DISTINCT(f.importloadid))
       INTO loads_processed
