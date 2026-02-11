@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `log_clientPortID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `log_clientPortID`
   (in_ClientPort INTEGER)
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE clientPort_ID INT DEFAULT null;

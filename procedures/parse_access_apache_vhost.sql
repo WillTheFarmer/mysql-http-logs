@@ -16,11 +16,11 @@ BEGIN
   DECLARE e2, e3 VARCHAR(128);
   DECLARE e4, e5 VARCHAR(64);
   DECLARE done BOOL DEFAULT false;
-  DECLARE importProcessID INT DEFAULT NULL;
-  DECLARE importLoad_ID INT DEFAULT NULL;
-  DECLARE importRecordID INT DEFAULT NULL;
-  DECLARE importFileCheck_ID INT DEFAULT NULL;
-  DECLARE importFile_common_ID INT DEFAULT NULL;
+  DECLARE importProcessID INT UNSIGNED DEFAULT NULL;
+  DECLARE importLoad_ID INT UNSIGNED DEFAULT NULL;
+  DECLARE importRecordID INT UNSIGNED DEFAULT NULL;
+  DECLARE importFileCheck_ID INT UNSIGNED DEFAULT NULL;
+  DECLARE importFile_common_ID INT UNSIGNED DEFAULT NULL;
   DECLARE records_processed INT DEFAULT 0;
   DECLARE files_processed INT DEFAULT 0;
   DECLARE loads_processed INT DEFAULT 1;
@@ -28,7 +28,7 @@ BEGIN
   -- declare cursor - All importloadIDs not processed
   DECLARE vhostStatus CURSOR FOR
         SELECT l.id
-          FROM load_access_vhost l
+          FROM load_access_apache_vhost l
     INNER JOIN import_file f
             ON l.importfileid = f.id
     INNER JOIN import_load il
@@ -38,7 +38,7 @@ BEGIN
   -- declare cursor - file count - All importloadIDs not processed
   DECLARE vhostStatusFile CURSOR FOR
         SELECT DISTINCT(l.importfileid)
-          FROM load_access_vhost l
+          FROM load_access_apache_vhost l
     INNER JOIN import_file f
             ON l.importfileid = f.id
     INNER JOIN import_load il
@@ -48,7 +48,7 @@ BEGIN
   -- declare cursor - single importLoadID
   DECLARE vhostLoadID CURSOR FOR
         SELECT l.id
-          FROM load_access_vhost l
+          FROM load_access_apache_vhost l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 0
@@ -56,7 +56,7 @@ BEGIN
   -- declare cursor - file count - single importLoadID
   DECLARE vhostLoadIDFile CURSOR FOR
         SELECT DISTINCT(l.importfileid)
-          FROM load_access_vhost l
+          FROM load_access_apache_vhost l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 0
@@ -87,7 +87,7 @@ BEGIN
   IF importLoad_ID IS NULL THEN
         SELECT COUNT(DISTINCT(f.importloadid))
           INTO loads_processed
-          FROM load_access_vhost l
+          FROM load_access_apache_vhost l
     INNER JOIN import_file f
             ON l.importfileid = f.id
     INNER JOIN import_load il
@@ -148,51 +148,51 @@ BEGIN
 
     SET records_processed = records_processed + 1;
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET server_name = SUBSTR(log_server, 1, LOCATE(':', log_server)-1)
      WHERE id=importRecordID AND LOCATE(':', log_server)>0;
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET server_port = SUBSTR(log_server, LOCATE(':', log_server)+1)
      WHERE id=importRecordID AND LOCATE(':', log_server)>0;
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_method = SUBSTR(first_line_request, 1, LOCATE(' ', first_line_request)-1)
      WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^[A-Z]';
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_uri = SUBSTR(first_line_request,LOCATE(' ', first_line_request)+1,LOCATE(' ', first_line_request, LOCATE(' ', first_line_request)+1)-LOCATE(' ', first_line_request)-1)
      WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^[A-Z]';
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_protocol = SUBSTR(first_line_request, LOCATE(' ', first_line_request, LOCATE(' ', first_line_request)+1))
      WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^[A-Z]';
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_query = SUBSTR(req_uri, LOCATE('?', req_uri))
      WHERE id=importRecordID AND LOCATE('?', req_uri)>0;
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_uri = SUBSTR(req_uri, 1, LOCATE('?', req_uri)-1)
      WHERE id=importRecordID AND LOCATE('?', req_uri)>0;
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_protocol = 'Invalid Request', req_method = 'Invalid Request', req_uri = 'Invalid Request'
      WHERE id=importRecordID AND LEFT(first_line_request, 1) NOT RLIKE '^[A-Z]|-';
 
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_protocol = 'Empty Request', req_method = 'Empty Request', req_uri = 'Empty Request'
      WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^-';
       
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET req_protocol = TRIM(req_protocol)
      WHERE id=importRecordID;
       
-    UPDATE load_access_vhost
+    UPDATE load_access_apache_vhost
        SET log_time = CONCAT(log_time_a, ' ', log_time_b)
      WHERE id=importRecordID;
 
-    UPDATE load_access_vhost SET process_status=1 WHERE id=importRecordID;
+    UPDATE load_access_apache_vhost SET process_status=1 WHERE id=importRecordID;
 
   END LOOP process_parse;
   -- to remove SQL calculating loads_processed when importLoad_ID is passed. Set=1 by default.

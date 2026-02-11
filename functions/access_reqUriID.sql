@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_reqUriID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_reqUriID`
     (in_ReqUri VARCHAR(2000))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE reqUri_ID INT DEFAULT null;

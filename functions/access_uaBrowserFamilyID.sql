@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_uaBrowserFamilyID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_uaBrowserFamilyID`
     (in_ua_browser_family VARCHAR(300))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE ua_browser_family_ID INT DEFAULT null;

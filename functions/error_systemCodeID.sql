@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_systemCodeID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_systemCodeID`
   (in_systemCode VARCHAR(400))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE systemCodeID INT DEFAULT null;

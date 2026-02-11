@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_logMessageID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_logMessageID`
   (in_message VARCHAR(500))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE messageID INT DEFAULT null;

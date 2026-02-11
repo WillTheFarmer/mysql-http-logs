@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_uaDeviceFamilyID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_uaDeviceFamilyID`
     (in_ua_device_family VARCHAR(300))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE ua_device_family_ID INT DEFAULT null;

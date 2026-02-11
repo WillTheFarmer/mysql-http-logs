@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_cookieID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_cookieID`
     (in_Cookie VARCHAR(400))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE cookie_ID INT DEFAULT null;

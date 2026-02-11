@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `log_clientNetworkID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `log_clientNetworkID`
   (in_network VARCHAR(100))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE clientNetwork_ID INT DEFAULT null;

@@ -13,8 +13,8 @@ BEGIN
   DECLARE e2, e3 VARCHAR(128);
   DECLARE e4, e5 VARCHAR(64);
   DECLARE done BOOL DEFAULT false;
-  DECLARE importProcessID INT DEFAULT NULL;
-  DECLARE importLoad_ID INT DEFAULT NULL;
+  DECLARE importProcessID INT UNSIGNED DEFAULT NULL;
+  DECLARE importLoad_ID INT UNSIGNED DEFAULT NULL;
   DECLARE records_processed INT DEFAULT 0;
   DECLARE files_processed INT DEFAULT 1;
   DECLARE processErrors INT DEFAULT 0;
@@ -30,7 +30,7 @@ BEGIN
   DECLARE v_ua_device_family VARCHAR(200) DEFAULT NULL;
   DECLARE v_ua_device_brand VARCHAR(200) DEFAULT NULL;
   DECLARE v_ua_device_model VARCHAR(200) DEFAULT NULL;
-  DECLARE userAgent_id INT DEFAULT NULL;
+  DECLARE userAgent_id INT UNSIGNED DEFAULT NULL;
   -- Primary IDs for the normalized Attribute tables
   DECLARE ua_id,
           uabrowser_id,
@@ -42,7 +42,7 @@ BEGIN
           uadevice_id,
           uadevicefamily_id,
           uadevicebrand_id,
-          uadevicemodel_id INT DEFAULT NULL;
+          uadevicemodel_id INT UNSIGNED DEFAULT NULL;
   -- declare cursor for userAgent format
   DECLARE userAgent CURSOR FOR
     SELECT ua,

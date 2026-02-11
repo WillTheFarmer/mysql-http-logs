@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_processID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_processID`
   (in_processid VARCHAR(100))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE process_ID INT DEFAULT null;

@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_reqMethodID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_reqMethodID`
     (in_ReqMethod VARCHAR(40))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE reqMethod_ID INT DEFAULT null;

@@ -1,0 +1,30 @@
+DROP TABLE IF EXISTS `access_log`;
+-- create table ---------------------------------------------------------
+CREATE TABLE `access_log` (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    logged DATETIME NOT NULL,
+    serverid INT UNSIGNED DEFAULT NULL COMMENT '%v	The canonical Server of the server serving the request. Access & Error shared normalization table - log_server',
+    serverportid INT UNSIGNED DEFAULT NULL COMMENT '%p	The canonical port of the server serving the request. Access & Error shared normalization table - log_serverport',
+    clientid BIGINT UNSIGNED DEFAULT NULL COMMENT 'This is %h - Remote hostname (default) for Access Log or %a - Client IP address and port of the request for Error and Access logs.',
+    clientportid INT UNSIGNED DEFAULT NULL COMMENT 'a% - Client IP address and port of the request - Default for Error logs and can be used in Access Log LogFormat. Port value is derived from it.',
+    refererid INT UNSIGNED DEFAULT NULL COMMENT '%{Referer}i - Access & Error shared normalization table - log_referer',
+    requestlogid BIGINT UNSIGNED DEFAULT NULL COMMENT '%L	Log ID of the request - Access & Error shared normalization table - log_requestlogid',
+    bytes_received BIGINT UNSIGNED NOT NULL,
+    bytes_sent BIGINT UNSIGNED NOT NULL,
+    bytes_transferred BIGINT UNSIGNED NOT NULL,
+    reqtime_milli INT UNSIGNED NOT NULL,
+    reqtime_micro INT UNSIGNED NOT NULL,
+    reqdelay_milli INT UNSIGNED NOT NULL,
+    reqbytes INT UNSIGNED NOT NULL,
+    reqstatusid INT UNSIGNED DEFAULT NULL,
+    reqprotocolid INT UNSIGNED DEFAULT NULL,
+    reqmethodid INT UNSIGNED DEFAULT NULL,
+    requriid INT UNSIGNED DEFAULT NULL,
+    reqqueryid INT UNSIGNED DEFAULT NULL,
+    remoteuserid INT UNSIGNED DEFAULT NULL,
+    remotelognameid INT UNSIGNED DEFAULT NULL,
+    cookieid INT UNSIGNED DEFAULT NULL,
+    useragentid INT UNSIGNED DEFAULT NULL,
+    importfileid INT UNSIGNED NOT NULL,
+    added DATETIME NOT NULL DEFAULT NOW()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Table is core table for access logs and contains foreign keys to relate to log attribute tables.';

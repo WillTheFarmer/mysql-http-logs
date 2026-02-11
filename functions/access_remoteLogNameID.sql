@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_remoteLogNameID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_remoteLogNameID`
     (in_RemoteLogName VARCHAR(150))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE remoteLogName_ID INT DEFAULT null;

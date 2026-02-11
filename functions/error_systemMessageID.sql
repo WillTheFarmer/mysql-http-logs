@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_systemMessageID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_systemMessageID`
   (in_systemMessage VARCHAR(400))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE systemMessageID INT DEFAULT null;

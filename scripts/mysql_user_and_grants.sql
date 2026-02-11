@@ -11,8 +11,8 @@ GRANT EXECUTE ON PROCEDURE parse_access_apache_csv2mysql TO `http_upload`@`local
 GRANT EXECUTE ON PROCEDURE import_access_apache_csv2mysql TO `http_upload`@`localhost`;
 GRANT EXECUTE ON PROCEDURE parse_error_apache TO `http_upload`@`localhost`;
 GRANT EXECUTE ON PROCEDURE import_error_apache TO `http_upload`@`localhost`;
-GRANT EXECUTE ON PROCEDURE parse_access_nginx_combined TO `http_upload`@`localhost`;
-GRANT EXECUTE ON PROCEDURE import_access_nginx_combined TO `http_upload`@`localhost`;
+GRANT EXECUTE ON PROCEDURE parse_access_nginx_default TO `http_upload`@`localhost`;
+GRANT EXECUTE ON PROCEDURE import_access_nginx_default TO `http_upload`@`localhost`;
 GRANT EXECUTE ON PROCEDURE parse_error_nginx TO `http_upload`@`localhost`;
 GRANT EXECUTE ON PROCEDURE import_error_nginx TO `http_upload`@`localhost`;
 GRANT EXECUTE ON PROCEDURE normalize_useragent TO `http_upload`@`localhost`;
@@ -27,12 +27,13 @@ GRANT EXECUTE ON FUNCTION importLoadProcessID TO `http_upload`@`localhost`;
 GRANT EXECUTE ON FUNCTION importFileExists TO `http_upload`@`localhost`;
 GRANT EXECUTE ON FUNCTION importFileID TO `http_upload`@`localhost`;
 -- Python module INSERTS into TABLES executing LOAD DATA LOCAL INFILE for log processing
-GRANT INSERT ON load_access_combined TO `http_upload`@`localhost`;
-GRANT INSERT ON load_access_csv TO `http_upload`@`localhost`;
-GRANT INSERT ON load_access_vhost TO `http_upload`@`localhost`;
-GRANT INSERT ON load_access_nginx TO `http_upload`@`localhost`;
-GRANT INSERT ON load_error_apache TO `http_upload`@`localhost`;
-GRANT INSERT ON load_error_nginx TO `http_upload`@`localhost`;
+GRANT INSERT ON load_access_apache_combined TO `http_upload`@`localhost`;
+GRANT INSERT ON load_access_apache_csv2mysql TO `http_upload`@`localhost`;
+GRANT INSERT ON load_access_apache_vhost TO `http_upload`@`localhost`;
+GRANT INSERT ON load_access_nginx_default TO `http_upload`@`localhost`;
+GRANT INSERT ON load_error_apache_default TO `http_upload`@`localhost`;
+GRANT INSERT ON load_error_apache_csv2mysql TO `http_upload`@`localhost`;
+GRANT INSERT ON load_error_nginx_default TO `http_upload`@`localhost`;
 -- Python module issues SELECT and UPDATE statements on TABLES due to converting parameters.
 -- Only reason TABLE direct access is number of parameters required for Stored Procedure.
 GRANT SELECT,UPDATE ON access_log_useragent TO `http_upload`@`localhost`;

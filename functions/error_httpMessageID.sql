@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_httpMessageID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_httpMessageID`
   (in_httpMessage VARCHAR(400))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE httpMessageID INT DEFAULT null;

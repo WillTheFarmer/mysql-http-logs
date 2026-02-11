@@ -11,10 +11,10 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `importServerID`
    in_serverid VARCHAR(75),
    in_comment VARCHAR(75)
   )
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
-  DECLARE importServer_ID INT DEFAULT null;
+  DECLARE importServer_ID INT UNSIGNED DEFAULT null;
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
     SET @error_count = 1;

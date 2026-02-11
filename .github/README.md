@@ -1,7 +1,7 @@
 # Database designed for HTTP log data analysis
 ![Entity Relationship Diagram](./images/entity_relationship_diagram.png)
 ## DDL for tables, indexes, views, function, procedures & constraints
-All SQL files and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simplier in Visual Studio Code.
+All SQL files and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simpler in Visual Studio Code.
 
 The Python build script assembles all SQL script files together into the single `create_http_logs.sql` file that is included in repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql) repository.
 
@@ -66,3 +66,13 @@ Multiple Access and Error logs and formats can be loaded, parsed and imported al
 ## Visual Interface App
 in my development queue [MySQL2ApacheECharts](https://github.com/willthefarmer/mysql-to-apache-echarts) is a ***visualization tool*** for the database schema. The Web interface consists of [Express](https://github.com/expressjs/express) web application frameworks with [W2UI](https://github.com/vitmalina/w2ui) drill-down data grids for Data Point Details 
 & [Apache ECharts](https://github.com/apache/echarts) frameworks for Data Visualization.
+
+## Other Documents
+
+[Installation Instructions](INSTALL.md)
+
+[Apache Format Information](APACHE_FORMATS.md)
+
+[Support Information](SUPPORT.md)
+
+[Change Log](CHANGELOG.md)

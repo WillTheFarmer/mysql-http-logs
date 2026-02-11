@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `log_clientSubdivisionID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `log_clientSubdivisionID`
   (in_subdivision VARCHAR(250))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE clientSubdivision_ID INT DEFAULT null;

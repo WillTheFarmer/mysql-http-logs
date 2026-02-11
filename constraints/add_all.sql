@@ -67,7 +67,7 @@ ALTER TABLE `access_log` ADD CONSTRAINT `F_access_remotelogname` FOREIGN KEY (re
 ALTER TABLE `access_log` ADD CONSTRAINT `F_access_remoteuser` FOREIGN KEY (remoteuserid) REFERENCES `access_log_remoteuser`(id);
 ALTER TABLE `access_log` ADD CONSTRAINT `F_access_useragent` FOREIGN KEY (useragentid) REFERENCES `access_log_useragent`(id);
 ALTER TABLE `access_log` ADD CONSTRAINT `F_access_cookie` FOREIGN KEY (cookieid) REFERENCES `access_log_cookie`(id);
-ALTER TABLE `access_log` ADD CONSTRAINT `F_access_importfile` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `access_log` ADD CONSTRAINT `F_access_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
 
 -- MySQL drops this index and uses compound index to enforce FOREIGN KEY
 ALTER TABLE `access_log` ADD CONSTRAINT `F_access_client` FOREIGN KEY (clientid) REFERENCES `log_client`(id);
@@ -88,7 +88,7 @@ ALTER TABLE `error_log` ADD CONSTRAINT `F_error_httpmessage` FOREIGN KEY (httpme
 ALTER TABLE `error_log` ADD CONSTRAINT `F_error_systemcode` FOREIGN KEY (systemcodeid) REFERENCES `error_log_systemcode`(id);
 ALTER TABLE `error_log` ADD CONSTRAINT `F_error_systemmessage` FOREIGN KEY (systemmessageid) REFERENCES `error_log_systemmessage`(id);
 ALTER TABLE `error_log` ADD CONSTRAINT `F_error_message` FOREIGN KEY (logmessageid) REFERENCES `error_log_message`(id);
-ALTER TABLE `error_log` ADD CONSTRAINT `F_error_importfile` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `error_log` ADD CONSTRAINT `F_error_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
 
 -- MySQL drops this index and uses compound index to enforce FOREIGN KEY
 ALTER TABLE `error_log` ADD CONSTRAINT `F_error_client` FOREIGN KEY (clientid) REFERENCES `log_client`(id);
@@ -118,24 +118,29 @@ ALTER TABLE `access_log_useragent` ADD CONSTRAINT `F_useragent_ua_os` FOREIGN KE
 ALTER TABLE `access_log_useragent` ADD CONSTRAINT `F_useragent_ua_os_family` FOREIGN KEY (uaosfamilyid) REFERENCES `access_log_ua_os_family`(id);
 ALTER TABLE `access_log_useragent` ADD CONSTRAINT `F_useragent_ua_os_version` FOREIGN KEY (uaosversionid) REFERENCES `access_log_ua_os_version`(id);
 
-ALTER TABLE `import_client` ADD CONSTRAINT `F_importclient_importdevice` FOREIGN KEY (importdeviceid) REFERENCES `import_device`(id);
+ALTER TABLE `import_client` ADD CONSTRAINT `F_import_client_importdevice` FOREIGN KEY (importdeviceid) REFERENCES `import_device`(id);
 
-ALTER TABLE `import_file` ADD CONSTRAINT `F_importfile_format` FOREIGN KEY (importfileformatid) REFERENCES `import_file_format`(id);
-ALTER TABLE `import_file` ADD CONSTRAINT `F_importfile_device` FOREIGN KEY (importdeviceid) REFERENCES `import_device`(id);
-ALTER TABLE `import_file` ADD CONSTRAINT `F_importfile_importload` FOREIGN KEY (importloadid) REFERENCES `import_load`(id);
-ALTER TABLE `import_file` ADD CONSTRAINT `F_importfile_load_process` FOREIGN KEY (loadprocessid) REFERENCES `import_process`(id);
-ALTER TABLE `import_file` ADD CONSTRAINT `F_importfile_parse_process` FOREIGN KEY (parseprocessid) REFERENCES `import_process`(id);
-ALTER TABLE `import_file` ADD CONSTRAINT `F_importfile_import_process` FOREIGN KEY (importprocessid) REFERENCES `import_process`(id);
+ALTER TABLE `import_file` ADD CONSTRAINT `F_import_file_format` FOREIGN KEY (importfileformatid) REFERENCES `import_file_format`(id);
+ALTER TABLE `import_file` ADD CONSTRAINT `F_import_file_device` FOREIGN KEY (importdeviceid) REFERENCES `import_device`(id);
+ALTER TABLE `import_file` ADD CONSTRAINT `F_import_file_load` FOREIGN KEY (importloadid) REFERENCES `import_load`(id);
+ALTER TABLE `import_file` ADD CONSTRAINT `F_import_file_process_load` FOREIGN KEY (loadprocessid) REFERENCES `import_process`(id);
+ALTER TABLE `import_file` ADD CONSTRAINT `F_import_file_process_parse` FOREIGN KEY (parseprocessid) REFERENCES `import_process`(id);
+ALTER TABLE `import_file` ADD CONSTRAINT `F_import_file_process_import` FOREIGN KEY (importprocessid) REFERENCES `import_process`(id);
 
-ALTER TABLE `import_process` ADD CONSTRAINT `F_process_importload` FOREIGN KEY (importloadid) REFERENCES `import_load`(id);
-ALTER TABLE `import_process` ADD CONSTRAINT `F_process_importserver` FOREIGN KEY (importserverid) REFERENCES `import_server`(id);
+ALTER TABLE `import_process` ADD CONSTRAINT `F_import_process_load` FOREIGN KEY (importloadid) REFERENCES `import_load`(id);
+ALTER TABLE `import_process` ADD CONSTRAINT `F_import_process_server` FOREIGN KEY (importserverid) REFERENCES `import_server`(id);
 
-ALTER TABLE `import_load` ADD CONSTRAINT `F_importload_importclient` FOREIGN KEY (importclientid) REFERENCES `import_client`(id);
+ALTER TABLE `import_load` ADD CONSTRAINT `F_import_load_client` FOREIGN KEY (importclientid) REFERENCES `import_client`(id);
 
-ALTER TABLE `load_access_combined` ADD CONSTRAINT `F_load_access_combined_importfile` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_access_csv` ADD CONSTRAINT `F_load_access_csv2mysql_importfile` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_access_vhost` ADD CONSTRAINT `F_load_access_combined_vhost_importfile` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_error_apache` ADD CONSTRAINT `F_load_error_apache_importfile` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_apache_combined` ADD CONSTRAINT `F_load_access_apache_combined_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_apache_csv2mysql` ADD CONSTRAINT `F_load_access_apache_csv2mysql_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_apache_vhost` ADD CONSTRAINT `F_load_access_apache_vhost_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_error_apache_default` ADD CONSTRAINT `F_load_error_apache_default_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_error_apache_csv2mysql` ADD CONSTRAINT `F_load_error_apache_csv2mysql_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+
+ALTER TABLE `load_access_nginx_default` ADD CONSTRAINT `F_load_access_nginx_default_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_nginx_csv2mysql` ADD CONSTRAINT `F_load_access_nginx_csv2mysql_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_error_nginx_default` ADD CONSTRAINT `F_load_error_nginx_default_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
 
 -- Additional Indexes
 ALTER TABLE `access_log` ADD INDEX `I_access_log_logged` (logged);
@@ -149,10 +154,15 @@ ALTER TABLE `error_log` ADD INDEX `I_error_log_serverid_serverportid` (serverid,
 ALTER TABLE `error_log` ADD INDEX `I_error_log_clientid_clientportid` (clientid, clientportid);
 ALTER TABLE `error_log` ADD INDEX `I_error_log_processid_threadid` (processid, threadid);
 
-ALTER TABLE `load_access_combined` ADD INDEX `I_load_access_combined_process` (process_status);
-ALTER TABLE `load_access_csv` ADD INDEX `I_load_access_csv2mysql_process` (process_status);
-ALTER TABLE `load_access_vhost` ADD INDEX `I_load_access_vhost_process` (process_status);
-ALTER TABLE `load_error_apache` ADD INDEX `I_load_error_apache_process` (process_status);
+ALTER TABLE `load_access_apache_combined` ADD INDEX `I_load_access_apache_combined_process` (process_status);
+ALTER TABLE `load_access_apache_csv2mysql` ADD INDEX `I_load_access_apache_csv2mysql_process` (process_status);
+ALTER TABLE `load_access_apache_vhost` ADD INDEX `I_load_access_apache_vhost_process` (process_status);
+ALTER TABLE `load_error_apache_default` ADD INDEX `I_load_error_apache_default_process` (process_status);
+ALTER TABLE `load_error_apache_csv2mysql` ADD INDEX `I_load_error_apache_csv2mysql_process` (process_status);
+
+ALTER TABLE `load_access_nginx_default` ADD INDEX `I_load_access_nginx_default_process` (process_status);
+ALTER TABLE `load_access_nginx_csv2mysql` ADD INDEX `I_load_access_nginx_csv2mysql_process` (process_status);
+ALTER TABLE `load_error_nginx_default` ADD INDEX `I_load_error_nginx_default_process` (process_status);
 
 -- indexes for parse and retrieve processes
 ALTER TABLE `log_client` ADD INDEX `I_log_client_country_code` (country_code);

@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_logLevelID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_logLevelID`
   (in_loglevel VARCHAR(100))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE logLevelID INT DEFAULT null;

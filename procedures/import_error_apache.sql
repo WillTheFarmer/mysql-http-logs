@@ -10,17 +10,17 @@ CREATE DEFINER = `root`@`localhost` PROCEDURE `import_error_apache`
 BEGIN
   -- module_name = moduleName column in import_process - to id procedure is being run
   -- in_processName = processName column in import_process - to id procedure OPTION is being run
-  DECLARE module_name VARCHAR(255) DEFAULT 'error_import';
+  DECLARE module_name VARCHAR(255) DEFAULT 'import_error_apache';
   -- standard variables for processes
   DECLARE e1 INT UNSIGNED;
   DECLARE e2, e3 VARCHAR(128);
   DECLARE e4, e5 VARCHAR(64);
   DECLARE done BOOL DEFAULT false;
-  DECLARE importProcessID INT DEFAULT NULL;
-  DECLARE importLoad_ID INT DEFAULT NULL;
-  DECLARE importRecordID INT DEFAULT NULL;
-  DECLARE importFile_ID INT DEFAULT NULL;
-  DECLARE importFileCheck_ID INT DEFAULT NULL;
+  DECLARE importProcessID INT UNSIGNED DEFAULT NULL;
+  DECLARE importLoad_ID INT UNSIGNED DEFAULT NULL;
+  DECLARE importRecordID INT UNSIGNED DEFAULT NULL;
+  DECLARE importFile_ID INT UNSIGNED DEFAULT NULL;
+  DECLARE importFileCheck_ID INT UNSIGNED DEFAULT NULL;
   DECLARE records_processed INT DEFAULT 0;
   DECLARE files_processed INT DEFAULT 0;
   DECLARE loads_processed INT DEFAULT 1;
@@ -84,14 +84,14 @@ BEGIN
              f.server_name server_name_file,
              f.server_port server_port_file,
              l.id
-        FROM load_error_apache l
+        FROM load_error_apache_default l
   INNER JOIN import_file f
           ON l.importfileid = f.id
        WHERE l.process_status = 1
          AND f.importloadid = importLoad_ID;
   DECLARE defaultByLoadIDFile CURSOR FOR
       SELECT DISTINCT(l.importfileid)
-        FROM load_error_apache l
+        FROM load_error_apache_default l
   INNER JOIN import_file f
           ON l.importfileid = f.id
        WHERE l.process_status = 1
@@ -117,13 +117,13 @@ BEGIN
              f.server_name server_name_file,
              f.server_port server_port_file,
              l.id
-        FROM load_error_apache l
+        FROM load_error_apache_default l
   INNER JOIN import_file f
           ON l.importfileid = f.id
        WHERE l.process_status = 1;
   DECLARE defaultByStatusFile CURSOR FOR
      SELECT DISTINCT(l.importfileid)
-       FROM load_error_apache l
+       FROM load_error_apache_default l
  INNER JOIN import_file f
          ON l.importfileid = f.id
       WHERE l.process_status = 1;
@@ -156,7 +156,7 @@ BEGIN
   IF importLoad_ID IS NULL THEN
     SELECT COUNT(DISTINCT(f.importloadid))
       INTO loads_processed
-      FROM load_error_apache l
+      FROM load_error_apache_default l
 INNER JOIN import_file f
         ON l.importfileid = f.id
      WHERE l.process_status = 1;
@@ -356,7 +356,7 @@ INNER JOIN import_file f
         serverPort_Id,
         requestLog_Id,
         importFile_ID);
-    UPDATE load_error_apache SET process_status=2 WHERE id=importRecordID;
+    UPDATE load_error_apache_default SET process_status=2 WHERE id=importRecordID;
   END LOOP process_import;
   -- to remove SQL calculating loads_processed when importLoad_ID is passed. Set=1 by default.
   IF importLoad_ID IS NOT NULL AND records_processed=0 THEN

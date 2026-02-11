@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_moduleID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_moduleID`
   (in_module VARCHAR(100))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE moduleID INT DEFAULT null;

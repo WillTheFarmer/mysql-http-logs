@@ -6,7 +6,7 @@ CREATE DEFINER = `root`@`localhost` FUNCTION `log_clientCountryID`
   (in_country VARCHAR(150),
    in_country_code VARCHAR(20)
   )
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE clientCountry_ID INT DEFAULT null;

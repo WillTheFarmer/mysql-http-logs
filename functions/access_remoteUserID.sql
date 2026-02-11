@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_remoteUserID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_remoteUserID`
     (in_RemoteUser VARCHAR(150))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE remoteUser_ID INT DEFAULT null;

@@ -1,3 +1,4 @@
+-- Active: 1743992561448@@127.0.0.1@3606@http_logs
 -- FOREIGN KEY Indexes
 ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_reqstatus`;
 ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_reqprotocol`;
@@ -8,7 +9,7 @@ ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_remotelogname`;
 ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_remoteuser`;
 ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_useragent`;
 ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_cookie`;
-ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_importfile`;
+ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_import_file`;
 
 ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_client`;
 ALTER TABLE `access_log` DROP FOREIGN KEY `F_access_clientport`;
@@ -26,7 +27,7 @@ ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_httpmessage`;
 ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_systemcode`;
 ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_systemmessage`;
 ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_message`;
-ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_importfile`;
+ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_import_file`;
 
 ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_client`;
 ALTER TABLE `error_log` DROP FOREIGN KEY `F_error_clientport`;
@@ -54,22 +55,23 @@ ALTER TABLE `access_log_useragent` DROP FOREIGN KEY `F_useragent_ua_os`;
 ALTER TABLE `access_log_useragent` DROP FOREIGN KEY `F_useragent_ua_os_family`;
 ALTER TABLE `access_log_useragent` DROP FOREIGN KEY `F_useragent_ua_os_version`;
 
-ALTER TABLE `import_client` DROP CONSTRAINT `F_importclient_importdevice`;
+ALTER TABLE `import_client` DROP CONSTRAINT `F_import_client_importdevice`;
 
-ALTER TABLE `import_file` DROP CONSTRAINT `F_importfile_importformat`;
-ALTER TABLE `import_file` DROP FOREIGN KEY `F_importfile_importdevice`;
-ALTER TABLE `import_file` DROP FOREIGN KEY `F_importfile_importload`;
-ALTER TABLE `import_file` DROP FOREIGN KEY `F_importfile_parseprocess`;
-ALTER TABLE `import_file` DROP FOREIGN KEY `F_importfile_importprocess`;
+ALTER TABLE `import_file` DROP CONSTRAINT `F_import_file_format`;
+ALTER TABLE `import_file` DROP FOREIGN KEY `F_import_file_device`;
+ALTER TABLE `import_file` DROP FOREIGN KEY `F_import_file_load`;
+ALTER TABLE `import_file` DROP FOREIGN KEY `F_import_file_parse`;
+ALTER TABLE `import_file` DROP FOREIGN KEY `F_import_file_import`;
 
-ALTER TABLE `import_process` DROP FOREIGN KEY `F_importprocess_importserver`;
+ALTER TABLE `import_process` DROP FOREIGN KEY `F_import_process_load`;
+ALTER TABLE `import_process` DROP FOREIGN KEY `F_import_process_server`;
 
-ALTER TABLE `import_load` DROP FOREIGN KEY `F_importload_importclient`;
+ALTER TABLE `import_load` DROP FOREIGN KEY `F_import_load_client`;
 
-ALTER TABLE `load_access_combined` DROP FOREIGN KEY `F_load_access_combined_importfile`;
-ALTER TABLE `load_access_csv` DROP FOREIGN KEY `F_load_access_csv2mysql_importfile`;
-ALTER TABLE `load_access_vhost` DROP FOREIGN KEY `F_load_access_combined_vhost_importfile`;
-ALTER TABLE `load_error_apache` DROP FOREIGN KEY `F_load_error_apache_importfile`;
+ALTER TABLE `load_access_combined` DROP FOREIGN KEY `F_load_access_combined_import_file`;
+ALTER TABLE `load_access_csv` DROP FOREIGN KEY `F_load_access_csv2mysql_import_file`;
+ALTER TABLE `load_access_vhost` DROP FOREIGN KEY `F_load_access_vhost_import_file`;
+ALTER TABLE `load_error_apache` DROP FOREIGN KEY `F_load_error_apache_import_file`;
 
 -- indexes not needed and serve no purpose since each file would never have more than one value for process_status
 -- ALTER TABLE `load_access_combined` DROP INDEX `I_load_access_combined_import_process;
@@ -140,7 +142,7 @@ DROP INDEX `F_access_remotelogname` ON `access_log`;
 DROP INDEX `F_access_remoteuser` ON `access_log`;
 DROP INDEX `F_access_useragent` ON `access_log`;
 DROP INDEX `F_access_cookie` ON `access_log`;
-DROP INDEX `F_access_importfile` ON `access_log`;
+DROP INDEX `F_access_import_file` ON `access_log`;
 
 -- MySQL drops this index and used compound index to enforce FOREIGN KEY
 -- DROP INDEX `F_access_client` ON `access_log`;
@@ -161,7 +163,7 @@ DROP INDEX `F_error_httpmessage` ON `error_log`;
 DROP INDEX `F_error_systemcode` ON `error_log`;
 DROP INDEX `F_error_systemmessage` ON `error_log`;
 DROP INDEX `F_error_message` ON `error_log`;
-DROP INDEX `F_error_importfile` ON `error_log`;
+DROP INDEX `F_error_import_file` ON `error_log`;
 
 -- MySQL drops this index when DROP CONSTRAINT to enforce FOREIGN KEY
 -- DROP INDEX `F_error_client` ON `error_log`;
@@ -192,23 +194,24 @@ DROP INDEX `F_useragent_ua_os_family` ON `access_log_useragent`;
 DROP INDEX `F_useragent_ua_os_version` ON `access_log_useragent`;
 
 -- MySQL drops this index and used compound index to enforce FOREIGN KEY
--- DROP INDEX `F_importclient_importdevice` ON `import_client`;
+-- DROP INDEX `F_import_client_device` ON `import_client`;
 
-DROP INDEX `F_importfile_importformat` ON `import_file`;
+DROP INDEX `F_import_file_format` ON `import_file`;
 -- MySQL drops this index and used compound index to enforce FOREIGN KEY
--- DROP INDEX `F_importfile_importdevice` ON `import_file`;
-DROP INDEX `F_importfile_importload` ON `import_file`;
-DROP INDEX `F_importfile_parseprocess` ON `import_file`;
-DROP INDEX `F_importfile_importprocess` ON `import_file`;
+-- DROP INDEX `F_import_file_device` ON `import_file`;
+DROP INDEX `F_import_file_load` ON `import_file`;
+DROP INDEX `F_import_file_process_load` ON `import_file`;
+DROP INDEX `F_import_file_process_parse` ON `import_file`;
+DROP INDEX `F_import_file_process_import` ON `import_file`;
+DROP INDEX `F_import_process_load` ON `import_process`;
+DROP INDEX `F_import_process_server` ON `import_process`;
 
-DROP INDEX `F_importprocess_importserver` ON `import_process`;
+DROP INDEX `F_import_load_client` ON `import_load`;
 
-DROP INDEX `F_importload_importclient` ON `import_load`;
-
-DROP INDEX `F_load_access_combined_importfile` ON `load_access_combined`;
-DROP INDEX `F_load_access_csv2mysql_importfile` ON `load_access_csv`;
-DROP INDEX `F_load_access_combined_vhost_importfile` ON `load_access_vhost`;
-DROP INDEX `F_load_error_apache_importfile` ON `load_error_apache`;
+DROP INDEX `F_load_access_combined_import_file` ON `load_access_combined`;
+DROP INDEX `F_load_access_csv2mysql_import_file` ON `load_access_csv`;
+DROP INDEX `F_load_access_vhost_import_file` ON `load_access_vhost`;
+DROP INDEX `F_load_error_apache_import_file` ON `load_error_apache`;
 
 -- Additional Indexes
 DROP INDEX `I_access_log_logged` ON `access_log`;

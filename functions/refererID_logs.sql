@@ -5,7 +5,7 @@ DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `refererID_logs`
   (in_refererID INTEGER,
    in_Log VARCHAR(1))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE logCount INT DEFAULT null;

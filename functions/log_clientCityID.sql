@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `log_clientCityID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `log_clientCityID`
   (in_city VARCHAR(250))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE clientCity_ID INT DEFAULT null;

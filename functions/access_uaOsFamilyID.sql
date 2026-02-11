@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_uaOsFamilyID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_uaOsFamilyID`
     (in_ua_os_family VARCHAR(300))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE ua_os_family_ID INT DEFAULT null;

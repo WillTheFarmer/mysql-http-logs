@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `log_refererID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `log_refererID`
   (in_Referer VARCHAR(1000))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE referer_ID INT DEFAULT null;

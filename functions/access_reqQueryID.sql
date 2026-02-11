@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_reqQueryID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_reqQueryID`
     (in_ReqQuery VARCHAR(5000))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE reqQuery_ID INT DEFAULT null;

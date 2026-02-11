@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_uaID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_uaID`
     (in_ua VARCHAR(300))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE ua_ID INT DEFAULT null;

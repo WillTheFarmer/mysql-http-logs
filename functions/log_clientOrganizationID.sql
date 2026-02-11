@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `log_clientOrganizationID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `log_clientOrganizationID`
   (in_organization VARCHAR(500))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE clientOrganization_ID INT DEFAULT null;

@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `log_requestLogID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `log_requestLogID`
   (in_RequestLog VARCHAR(50))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE requestLog_ID INT DEFAULT null;

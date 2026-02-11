@@ -5,7 +5,7 @@ DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `clientPortID_logs`
   (in_clientPortID INTEGER,
    in_Log VARCHAR(1))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE logCount INT DEFAULT null;

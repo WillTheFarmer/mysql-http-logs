@@ -13,8 +13,8 @@ BEGIN
   DECLARE e2, e3 VARCHAR(128);
   DECLARE e4, e5 VARCHAR(64);
   DECLARE done BOOL DEFAULT false;
-  DECLARE importProcessID INT DEFAULT NULL;
-  DECLARE importLoad_ID INT DEFAULT NULL;
+  DECLARE importProcessID INT UNSIGNED DEFAULT NULL;
+  DECLARE importLoad_ID INT UNSIGNED DEFAULT NULL;
   DECLARE records_processed INT DEFAULT 0;
   DECLARE files_processed INT DEFAULT 1;
   DECLARE processErrors INT DEFAULT 0;
@@ -27,14 +27,14 @@ BEGIN
   DECLARE v_longitude DECIMAL(11,8) DEFAULT NULL;
   DECLARE v_organization VARCHAR(500) DEFAULT NULL;
   DECLARE v_network VARCHAR(100) DEFAULT NULL;
-  DECLARE recid INT DEFAULT NULL;
+  DECLARE recid INT UNSIGNED DEFAULT NULL;
   -- Primary IDs for the normalized Attribute tables
   DECLARE country_id,
           subdivision_id,
           city_id,
           coordinate_id,
           organization_id,
-          network_id INT DEFAULT NULL;
+          network_id INT UNSIGNED DEFAULT NULL;
   -- declare cursor for log_client format
   DECLARE logClient CURSOR FOR
       SELECT country_code,

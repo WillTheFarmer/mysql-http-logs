@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_reqStatus`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_reqStatus`
     (in_ReqStatusID INTEGER)
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE reqStatus INT DEFAULT null;

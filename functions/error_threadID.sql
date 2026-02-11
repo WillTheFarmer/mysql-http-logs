@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `error_threadID`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `error_threadID`
   (in_threadid VARCHAR(100))
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE thread_ID INT DEFAULT null;

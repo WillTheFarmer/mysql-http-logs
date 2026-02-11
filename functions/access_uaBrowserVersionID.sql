@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_uaBrowserVersionID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_uaBrowserVersionID`
     (in_ua_browser_version VARCHAR(300))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE ua_browser_version_ID INT DEFAULT null;

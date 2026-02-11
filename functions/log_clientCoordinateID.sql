@@ -6,7 +6,7 @@ CREATE DEFINER = `root`@`localhost` FUNCTION `log_clientCoordinateID`
   (in_latitude DECIMAL(10,8),
    in_longitude DECIMAL(11,8)
   )
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE clientCoordinate_ID INT DEFAULT null;

@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_uaDeviceBrandID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_uaDeviceBrandID`
     (in_ua_device_brand VARCHAR(300))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE ua_device_brand_ID INT DEFAULT null;

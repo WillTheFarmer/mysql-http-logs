@@ -16,11 +16,11 @@ BEGIN
   DECLARE e2, e3 VARCHAR(128);
   DECLARE e4, e5 VARCHAR(64);
   DECLARE done BOOL DEFAULT false;
-  DECLARE importProcessID INT DEFAULT NULL;
-  DECLARE importLoad_ID INT DEFAULT NULL;
-  DECLARE importRecordID INT DEFAULT NULL;
-  DECLARE importFileCheck_ID INT DEFAULT NULL;
-  DECLARE importFile_ID INT DEFAULT NULL;
+  DECLARE importProcessID INT UNSIGNED DEFAULT NULL;
+  DECLARE importLoad_ID INT UNSIGNED DEFAULT NULL;
+  DECLARE importRecordID INT UNSIGNED DEFAULT NULL;
+  DECLARE importFileCheck_ID INT UNSIGNED DEFAULT NULL;
+  DECLARE importFile_ID INT UNSIGNED DEFAULT NULL;
   DECLARE records_processed INT DEFAULT 0;
   DECLARE files_processed INT DEFAULT 0;
   DECLARE loads_processed INT DEFAULT 1;
@@ -90,14 +90,14 @@ BEGIN
                f.server_name server_name_file,
                f.server_port server_port_file,
                l.id
-          FROM load_access_combined l
+          FROM load_access_apache_combined l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1;
   -- declare cursor for format load table - All importloadIDs not processed
   DECLARE combinedStatusFile CURSOR FOR
         SELECT DISTINCT(l.importfileid)
-          FROM load_access_combined l
+          FROM load_access_apache_combined l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1;
@@ -121,7 +121,7 @@ BEGIN
                  f.server_name server_name_file,
                  f.server_port server_port_file,
                  l.id
-            FROM load_access_combined l
+            FROM load_access_apache_combined l
       INNER JOIN import_file f
                ON l.importfileid = f.id
             WHERE l.process_status = 1
@@ -129,7 +129,7 @@ BEGIN
   -- declare cursor for format load table - single importLoadID
   DECLARE combinedLoadIDFile CURSOR FOR
         SELECT DISTINCT(l.importfileid)
-          FROM load_access_combined l
+          FROM load_access_apache_combined l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1
@@ -166,7 +166,7 @@ BEGIN
   IF importLoad_ID IS NULL THEN
         SELECT COUNT(DISTINCT(f.importloadid))
           INTO loads_processed
-          FROM load_access_combined l
+          FROM load_access_apache_combined l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1;
@@ -392,7 +392,7 @@ BEGIN
        requestLog_Id,
        importFile_ID);
     -- update file record in load table
-    UPDATE load_access_combined SET process_status=2 WHERE id=importRecordID;
+    UPDATE load_access_apache_combined SET process_status=2 WHERE id=importRecordID;
   END LOOP process_import;
   -- to remove SQL calculating loads_processed when importLoad_ID is passed. Set=1 by default.
   IF importLoad_ID IS NOT NULL AND records_processed=0 THEN

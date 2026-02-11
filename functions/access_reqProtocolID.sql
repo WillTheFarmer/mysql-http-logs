@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_reqProtocolID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_reqProtocolID`
     (in_ReqProtocol VARCHAR(20))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE reqProtocol_ID INT DEFAULT null;

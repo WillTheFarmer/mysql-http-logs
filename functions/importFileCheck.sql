@@ -3,17 +3,17 @@ DROP FUNCTION IF EXISTS `importFileCheck`;
 -- create function -----------------------------------------------------------
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `importFileCheck`
-  (importfileid INTEGER,
-   processid INTEGER,
+  (importfileid INT UNSIGNED,
+   processid INT UNSIGNED,
    processType VARCHAR(10)
   ) 
-  RETURNS INTEGER
+  RETURNS INT
   READS SQL DATA
 BEGIN
   DECLARE errno SMALLINT UNSIGNED DEFAULT 1644;
   DECLARE importFileName VARCHAR(300) DEFAULT null;
-  DECLARE parseProcess_ID INT DEFAULT null;
-  DECLARE importProcess_ID INT DEFAULT null;
+  DECLARE parseProcess_ID INT UNSIGNED DEFAULT null;
+  DECLARE importProcess_ID INT UNSIGNED DEFAULT null;
   DECLARE processFile INT DEFAULT 1;
   DECLARE EXIT HANDLER FOR SQLEXCEPTION RESIGNAL SET SCHEMA_NAME = 'http_logs', CATALOG_NAME = 'importFileCheck'; 
   SELECT name,

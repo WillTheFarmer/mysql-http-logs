@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS `access_userAgentID`;
 DELIMITER //
 CREATE DEFINER = `root`@`localhost` FUNCTION `access_userAgentID`
     (in_UserAgent VARCHAR(2000))
-    RETURNS INTEGER
+    RETURNS INT
     READS SQL DATA
 BEGIN
     DECLARE userAgent_ID INT DEFAULT null;
