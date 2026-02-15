@@ -3,7 +3,7 @@
 ## DDL for tables, indexes, views, function, procedures & constraints
 All SQL files and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simpler in Visual Studio Code.
 
-The Python build script assembles all SQL script files together into the single `create_http_logs.sql` file that is included in repository [httpLogs2MySQL](https://github.com/willthefarmer/http-logs-to-mysql) repository.
+The Python build script assembles all SQL script files together into the single `create_http_logs.sql` file that is included in repository [logFiles2MySQL](https://github.com/willthefarmer/http-logs-to-mysql) repository.
 
 ### 1. NGINX formats and procedural code
 From documentation read NGINX standard access logformat is same as Apache combined. I have not verified by examining NGINX data yet.
