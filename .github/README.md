@@ -1,5 +1,6 @@
-# Database designed for HTTP log data analysis
-#### N2K info - MySQL http_logs broke into 2 MySQL schemas | file_ingest & http_logs | importfileid INT to BIGINT | NGINX fixed
+## Database designed for HTTP log data analysis
+Ingest years of Apache & NGINX log files into a fully-normalized database. IP Geolocation & User-Agent data integration. Automate processing files from multiple domains & servers. Small codebase & simple setup. The only relational database solution!
+
 ![Entity Relationship Diagram](./images/entity_relationship_diagram.png)
 ## DDL for tables, indexes, views, function, procedures & constraints
 All SQL files and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simpler in Visual Studio Code.
