@@ -20,6 +20,7 @@ BEGIN
   DECLARE db_machine VARCHAR(55) DEFAULT NULL;
   DECLARE db_comment VARCHAR(75) DEFAULT NULL;
   DECLARE db_serverid VARCHAR(75) DEFAULT NULL;
+  DECLARE message_check VARCHAR(1000) DEFAULT NULL;
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
     IF @error_count=1 THEN RESIGNAL SET SCHEMA_NAME = 'http_logs', CATALOG_NAME = 'importServerID called from importProcessID'; ELSE RESIGNAL SET SCHEMA_NAME = 'http_logs', CATALOG_NAME = 'importProcessID'; END IF;
@@ -77,7 +78,8 @@ BEGIN
 
       SET importProcess_ID = LAST_INSERT_ID();
   END IF;
-
+  -- SELECT CONCAT("passed_importProcess_ID = ", IFNULL(passed_importProcess_ID,"Is null"), " importProcess_ID = ", IFNULL(importProcess_ID,"Is null")) INTO message_check FROM DUAL;
+  -- INSERT INTO import_message (module_name, message_text) VALUES ("importServerProcessID",  message_check);
   RETURN importProcess_ID;
 END //
 DELIMITER ;

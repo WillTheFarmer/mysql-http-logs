@@ -11,6 +11,7 @@ CREATE TABLE `import_process` (
   records_processed INT DEFAULT NULL COMMENT 'this was previously "records" column in old import_process table',
   loads_processed INT DEFAULT NULL COMMENT 'this was previously "loads" column in old import_process table',
   error_count INT DEFAULT NULL,
+  warning_count INT DEFAULT NULL,
   process_seconds INT DEFAULT NULL,
   started DATETIME NOT NULL DEFAULT NOW(),
   completed DATETIME DEFAULT NULL

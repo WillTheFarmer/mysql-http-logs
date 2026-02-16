@@ -132,15 +132,13 @@ ALTER TABLE `import_process` ADD CONSTRAINT `F_import_process_server` FOREIGN KE
 
 ALTER TABLE `import_load` ADD CONSTRAINT `F_import_load_client` FOREIGN KEY (importclientid) REFERENCES `import_client`(id);
 
-ALTER TABLE `load_access_apache_combined` ADD CONSTRAINT `F_load_access_apache_combined_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_access_apache_csv2mysql` ADD CONSTRAINT `F_load_access_apache_csv2mysql_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_access_apache_vhost` ADD CONSTRAINT `F_load_access_apache_vhost_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_error_apache_default` ADD CONSTRAINT `F_load_error_apache_default_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_error_apache_csv2mysql` ADD CONSTRAINT `F_load_error_apache_csv2mysql_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-
-ALTER TABLE `load_access_nginx_default` ADD CONSTRAINT `F_load_access_nginx_default_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_access_nginx_csv2mysql` ADD CONSTRAINT `F_load_access_nginx_csv2mysql_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
-ALTER TABLE `load_error_nginx_default` ADD CONSTRAINT `F_load_error_nginx_default_import_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_apache_combined` ADD CONSTRAINT `F_load_access_apache_combined_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_apache_csv2mysql` ADD CONSTRAINT `F_load_access_apache_csv2mysql_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_apache_vhost` ADD CONSTRAINT `F_load_access_apache_vhost_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_error_apache_default` ADD CONSTRAINT `F_load_error_apache_default_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_nginx_default` ADD CONSTRAINT `F_load_access_nginx_default_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_access_nginx_csv2mysql` ADD CONSTRAINT `F_load_access_nginx_csv2mysql_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
+ALTER TABLE `load_error_nginx_default` ADD CONSTRAINT `F_load_error_nginx_default_file` FOREIGN KEY (importfileid) REFERENCES `import_file`(id);
 
 -- Additional Indexes
 ALTER TABLE `access_log` ADD INDEX `I_access_log_logged` (logged);
@@ -158,7 +156,6 @@ ALTER TABLE `load_access_apache_combined` ADD INDEX `I_load_access_apache_combin
 ALTER TABLE `load_access_apache_csv2mysql` ADD INDEX `I_load_access_apache_csv2mysql_process` (process_status);
 ALTER TABLE `load_access_apache_vhost` ADD INDEX `I_load_access_apache_vhost_process` (process_status);
 ALTER TABLE `load_error_apache_default` ADD INDEX `I_load_error_apache_default_process` (process_status);
-ALTER TABLE `load_error_apache_csv2mysql` ADD INDEX `I_load_error_apache_csv2mysql_process` (process_status);
 
 ALTER TABLE `load_access_nginx_default` ADD INDEX `I_load_access_nginx_default_process` (process_status);
 ALTER TABLE `load_access_nginx_csv2mysql` ADD INDEX `I_load_access_nginx_csv2mysql_process` (process_status);

@@ -3,8 +3,8 @@
 Each Stored Procedure has 2 parameters. First is Access & Error LogFormats. Second parameter is importLoadID and important for processing.
 - IN in_processName VARCHAR(100) - LogFormat to process. 
 NOTE: For normalize_useragent parameter can be any string >= 8 characters. It is for reference use only
-- IN in_importLoadID VARCHAR(20) - importLoadID to process. Valid values 'ALL' or a value converted to INTEGER=importLoadID   
-NOTE: if in_importLoadID='ALL' ONLY importLoadID records with import_load TABLE "completed" COLUMN NOT NULL will be processed.
+- IN in_importProcessID VARCHAR(20) - importLoadID to process. Valid values 'ALL' or a value converted to INTEGER=importLoadID   
+NOTE: if in_importProcessID='ALL' ONLY importLoadID records with import_load TABLE "completed" COLUMN NOT NULL will be processed.
 This avoids interfering with Python client modules uploading files at same time as server STORED PROCEDURES executing.
  
 LOAD DATA stage tables - load_access_combined, load_access_csv2mysql, load_access_vhost, load_access_nginx, load_error_apache, load_error_nginx have a process_status COLUMN.

@@ -1,8 +1,8 @@
 -- drop procedure -----------------------------------------------------------
-DROP PROCEDURE IF EXISTS `import_access_apache_csv2mysql`;
+DROP PROCEDURE IF EXISTS `import_access_nginx_csv2mysql`;
 -- create procedure ---------------------------------------------------------
 DELIMITER //
-CREATE DEFINER = `root`@`localhost` PROCEDURE `import_access_apache_csv2mysql`
+CREATE DEFINER = `root`@`localhost` PROCEDURE `import_access_nginx_csv2mysql`
 (
   IN in_processName VARCHAR(100),
   IN in_importProcessID VARCHAR(20)
@@ -10,7 +10,7 @@ CREATE DEFINER = `root`@`localhost` PROCEDURE `import_access_apache_csv2mysql`
 BEGIN
   -- module_name_process = module_name column in import_process - to id procedure is being run
   -- in_processName = process_name column in import_process - to id procedure OPTION is being run
-  DECLARE module_name_process VARCHAR(255) DEFAULT 'import_access_apache_csv2mysql';
+  DECLARE module_name_process VARCHAR(255) DEFAULT 'import_access_nginx_csv2mysql';
   -- standard variables for processes
   DECLARE e1 INT UNSIGNED;
   DECLARE e2, e3 VARCHAR(128);
@@ -98,14 +98,14 @@ BEGIN
                f.server_name server_name_file,
                f.server_port server_port_file,
                l.id
-          FROM load_access_apache_csv2mysql l
+          FROM load_access_nginx_csv2mysql l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1;
   -- declare cursor for csv2mysql format - All importloadIDs not processed
   DECLARE csv2mysqlStatusFile CURSOR FOR
         SELECT DISTINCT(l.importfileid)
-          FROM load_access_apache_csv2mysql l
+          FROM load_access_nginx_csv2mysql l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1;
@@ -137,7 +137,7 @@ BEGIN
                f.server_name server_name_file,
                f.server_port server_port_file,
                l.id
-          FROM load_access_apache_csv2mysql l
+          FROM load_access_nginx_csv2mysql l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1
@@ -145,7 +145,7 @@ BEGIN
     -- declare cursor for csv2mysql format - single importLoadID
   DECLARE csv2mysqlLoadIDFile CURSOR FOR
         SELECT DISTINCT(l.importfileid)
-          FROM load_access_apache_csv2mysql l
+          FROM load_access_nginx_csv2mysql l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1
@@ -182,7 +182,7 @@ BEGIN
   IF importLoad_ID IS NULL THEN
         SELECT COUNT(DISTINCT(f.importloadid))
           INTO loadsProcessed
-          FROM load_access_apache_csv2mysql l
+          FROM load_access_nginx_csv2mysql l
     INNER JOIN import_file f
             ON l.importfileid = f.id
          WHERE l.process_status = 1;
@@ -421,7 +421,7 @@ BEGIN
        requestLog_Id,
        importFile_ID);
     -- update file record in load table
-    UPDATE load_access_apache_csv2mysql SET process_status=2 WHERE id=importRecordID;
+    UPDATE load_access_nginx_csv2mysql SET process_status=2 WHERE id=importRecordID;
   END LOOP process_import;
   -- to remove SQL calculating loadsProcessed when importLoad_ID is passed. Set=1 by default.
   IF importLoad_ID IS NOT NULL AND recordsProcessed=0 THEN

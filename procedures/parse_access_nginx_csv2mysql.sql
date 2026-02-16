@@ -1,8 +1,8 @@
 -- drop procedure -----------------------------------------------------------
-DROP PROCEDURE IF EXISTS `parse_access_apache_combined`;
+DROP PROCEDURE IF EXISTS `parse_access_nginx_csv2mysql`;
 -- create procedure ---------------------------------------------------------
 DELIMITER //
-CREATE DEFINER = `root`@`localhost` PROCEDURE `parse_access_apache_combined`
+CREATE DEFINER = `root`@`localhost` PROCEDURE `parse_access_nginx_csv2mysql`
 (
   IN in_processName VARCHAR(100),
   IN in_importProcessID VARCHAR(20)
@@ -10,7 +10,7 @@ CREATE DEFINER = `root`@`localhost` PROCEDURE `parse_access_apache_combined`
 BEGIN
   -- module_name_process = module_name column in import_process - to id procedure is being run
   -- in_processName = process_name column in import_process - to id procedure OPTION is being run
-  DECLARE module_name_process VARCHAR(255) DEFAULT 'parse_access_apache_combined';
+  DECLARE module_name_process VARCHAR(255) DEFAULT 'parse_access_nginx_csv2mysql';
   -- standard variables for processes
   DECLARE e1 INT UNSIGNED;
   DECLARE e2, e3 VARCHAR(128);
@@ -26,9 +26,9 @@ BEGIN
   DECLARE loadsProcessed INT DEFAULT 1;
   DECLARE processErrors INT DEFAULT 0;
   -- declare cursor - All importloadIDs not processed
-  DECLARE combinedStatus CURSOR FOR
+  DECLARE csv2mysqlStatus CURSOR FOR
       SELECT l.id
-        FROM load_access_apache_combined l
+        FROM load_access_nginx_csv2mysql l
   INNER JOIN import_file f
           ON l.importfileid = f.id
   INNER JOIN import_load il
@@ -36,9 +36,9 @@ BEGIN
        WHERE l.process_status = 0
          AND il.completed IS NOT NULL;
   -- declare cursor - file count - All importloadIDs not processed
-  DECLARE combinedStatusFile CURSOR FOR
+  DECLARE csv2mysqlStatusFile CURSOR FOR
       SELECT DISTINCT(l.importfileid)
-        FROM load_access_apache_combined l
+        FROM load_access_nginx_csv2mysql l
   INNER JOIN import_file f
           ON l.importfileid = f.id
   INNER JOIN import_load il
@@ -46,47 +46,27 @@ BEGIN
        WHERE l.process_status = 0
          AND il.completed IS NOT NULL;
 -- declare cursor - single importLoadID
-  DECLARE combinedLoadID CURSOR FOR
+  DECLARE csv2mysqlLoadID CURSOR FOR
       SELECT l.id
-        FROM load_access_apache_combined l
+        FROM load_access_nginx_csv2mysql l
   INNER JOIN import_file f
           ON l.importfileid = f.id
        WHERE l.process_status = 0
          AND f.importloadid = importLoad_ID;
   -- declare cursor - file count - single importLoadID
-  DECLARE combinedLoadIDFile CURSOR FOR
+  DECLARE csv2mysqlLoadIDFile CURSOR FOR
       SELECT DISTINCT(l.importfileid)
-        FROM load_access_apache_combined l
+        FROM load_access_nginx_csv2mysql l
   INNER JOIN import_file f
           ON l.importfileid = f.id
        WHERE l.process_status = 0
          AND f.importloadid = importLoad_ID;
-  -- declare cursor for importfileformatid SET=2 in Python check if common format
-  DECLARE commonStatusFile CURSOR FOR
-      SELECT DISTINCT(l.importfileid)
-        FROM load_access_apache_combined l
-  INNER JOIN import_file f
-          ON l.importfileid = f.id
-  INNER JOIN import_load il
-          ON f.importloadid = il.id
-       WHERE l.process_status = 0
-         AND il.completed IS NOT NULL
-         AND l.log_useragent IS NULL;
-  -- declare cursor for importfileformatid SET=2 in Python check if common format
-  DECLARE commonLoadIDFile CURSOR FOR
-      SELECT DISTINCT(l.importfileid)
-        FROM load_access_apache_combined l
-  INNER JOIN import_file f
-          ON l.importfileid = f.id
-       WHERE l.process_status = 0
-         AND f.importloadid = importLoad_ID
-         AND l.log_useragent IS NULL;
   -- declare NOT FOUND handler
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
       GET DIAGNOSTICS CONDITION 1 e1 = MYSQL_ERRNO, e2 = MESSAGE_TEXT, e3 = RETURNED_SQLSTATE, e4 = SCHEMA_NAME, e5 = CATALOG_NAME;
-      CALL messageProcess( module_name_process, e1, e2, e3, e4, e5, importLoad_ID, importProcessID);
+      CALL messageProcess('parse_access_apache', e1, e2, e3, e4, e5, importLoad_ID, importProcessID);
       SET processErrors = processErrors + 1;
       ROLLBACK;
     END;
@@ -107,7 +87,7 @@ BEGIN
   IF importLoad_ID IS NULL THEN
         SELECT COUNT(DISTINCT(f.importloadid))
           INTO loadsProcessed
-          FROM load_access_apache_combined l
+          FROM load_access_nginx_csv2mysql l
     INNER JOIN import_file f
             ON l.importfileid = f.id
     INNER JOIN import_load il
@@ -116,42 +96,18 @@ BEGIN
            AND il.completed IS NOT NULL;
   END IF;	
   START TRANSACTION;
-  -- importfileformatid SET=2 in Python check if common format - 'Import File Format - 1=common,2=combined,3=vhost,4=csv2mysql,5=error_default,6=error_vhost'
-  IF importLoad_ID IS NULL THEN
-    OPEN commonStatusFile;
-  ELSE
-    OPEN commonLoadIDFile;
-  END IF;
-  set_commonformat: LOOP
-    IF importLoad_ID IS NULL THEN
-      FETCH commonStatusFile INTO importFile_common_ID;
-    ELSE
-      FETCH commonLoadIDFile INTO importFile_common_ID;
-    END IF;
-    IF done = true THEN
-      LEAVE set_commonformat;
-    END IF;
-    UPDATE import_file
-       SET importfileformatid=1
-     WHERE id = importFile_common_ID;
-  END LOOP set_commonformat;
-  IF importLoad_ID IS NULL THEN
-    CLOSE commonStatusFile;
-  ELSE
-    CLOSE commonLoadIDFile;
-  END IF;
   SET done = false;
   -- process import_file TABLE first
   IF importLoad_ID IS NULL THEN
-    OPEN combinedStatusFile;
+    OPEN csv2mysqlStatusFile;
   ELSE
-    OPEN combinedLoadIDFile;
+    OPEN csv2mysqlLoadIDFile;
   END IF;
   process_parse_file: LOOP
-	  IF importLoad_ID IS NULL THEN
-      FETCH combinedStatusFile INTO importFileCheck_ID;
+  	IF importLoad_ID IS NULL THEN
+      FETCH csv2mysqlStatusFile INTO importFileCheck_ID;
 	  ELSE
-      FETCH combinedLoadIDFile INTO importFileCheck_ID;
+      FETCH csv2mysqlLoadIDFile INTO importFileCheck_ID;
     END IF;
     IF done = true THEN
       LEAVE process_parse_file;
@@ -163,65 +119,30 @@ BEGIN
     SET filesProcessed = filesProcessed + 1;
   END LOOP process_parse_file;
   IF importLoad_ID IS NULL THEN
-    CLOSE combinedStatusFile;
+    CLOSE csv2mysqlStatusFile;
   ELSE
-    CLOSE combinedLoadIDFile;
+    CLOSE csv2mysqlLoadIDFile;
   END IF;
   -- process records
   SET done = false;
-	IF importLoad_ID IS NULL THEN
-    OPEN combinedStatus;
-	ELSE
-    OPEN combinedLoadID;
+  IF importLoad_ID IS NULL THEN
+    OPEN csv2mysqlStatus;
+  ELSE
+    OPEN csv2mysqlLoadID;
   END IF;
   process_parse: LOOP
     IF importLoad_ID IS NULL THEN
-      FETCH combinedStatus INTO importRecordID;
+      FETCH csv2mysqlStatus INTO importRecordID;
     ELSE
-      FETCH combinedLoadID INTO importRecordID;
+      FETCH csv2mysqlLoadID INTO importRecordID;
     END IF;
     IF done = true THEN
       LEAVE process_parse;
     END IF;
     SET recordsProcessed = recordsProcessed + 1;
-
-    UPDATE load_access_apache_combined
-    SET req_method = SUBSTR(first_line_request, 1, LOCATE(' ', first_line_request)-1)
-    WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^[A-Z]';
-      
-    UPDATE load_access_apache_combined
-    SET req_uri = SUBSTR(first_line_request, LOCATE(' ', first_line_request)+1, LOCATE(' ', first_line_request, LOCATE(' ', first_line_request)+1)-LOCATE(' ', first_line_request)-1)
-    WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^[A-Z]';
-      
-    UPDATE load_access_apache_combined
-    SET req_protocol = SUBSTR(first_line_request, LOCATE(' ', first_line_request, LOCATE(' ', first_line_request)+1))
-    WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^[A-Z]';
-      
-    UPDATE load_access_apache_combined
-    SET req_query = SUBSTR(req_uri,LOCATE('?', req_uri))
-    WHERE id=importRecordID AND LOCATE('?', req_uri)>0;
-      
-    UPDATE load_access_apache_combined
-    SET req_uri = SUBSTR(req_uri, 1, LOCATE('?', req_uri)-1)
-    WHERE id=importRecordID AND LOCATE('?', req_uri)>0;
-      
-    UPDATE load_access_apache_combined
-    SET req_protocol = 'Invalid Request', req_method = 'Invalid Request', req_uri = 'Invalid Request'
-    WHERE id=importRecordID AND LEFT(first_line_request, 1) NOT RLIKE '^[A-Z]|-';
-      
-    UPDATE load_access_apache_combined
-    SET req_protocol = 'Empty Request', req_method = 'Empty Request', req_uri = 'Empty Request'
-    WHERE id=importRecordID AND LEFT(first_line_request, 1) RLIKE '^-';
-      
-    UPDATE load_access_apache_combined
-    SET req_protocol = TRIM(req_protocol)
-    WHERE id=importRecordID;
-      
-    UPDATE load_access_apache_combined
-    SET log_time = CONCAT(log_time_a, ' ', log_time_b)
-    WHERE id=importRecordID;
-
-    UPDATE load_access_apache_combined SET process_status=1 WHERE id=importRecordID;
+    -- IF in_processName = 'csv2mysql' THEN
+    -- by default, no parsing required for csv2mysql format
+    UPDATE load_access_nginx_csv2mysql SET process_status=1 WHERE id=importRecordID;
   END LOOP process_parse;
   -- to remove SQL calculating loadsProcessed when importLoad_ID is passed. Set=1 by default.
   IF importLoad_ID IS NOT NULL AND recordsProcessed=0 THEN
@@ -240,9 +161,9 @@ BEGIN
    WHERE id = importProcessID;
   COMMIT;
   IF importLoad_ID IS NULL THEN
-    CLOSE combinedStatus;
+    CLOSE csv2mysqlStatus;
   ELSE
-    CLOSE combinedLoadID;
+    CLOSE csv2mysqlLoadID;
   END IF;
 END//
 DELIMITER ;

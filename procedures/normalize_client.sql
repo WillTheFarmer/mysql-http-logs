@@ -5,7 +5,7 @@ DELIMITER //
 CREATE DEFINER = `root`@`localhost` PROCEDURE `normalize_client`
 (
   IN in_processName VARCHAR(100),
-  IN in_importLoadID VARCHAR(20)
+  IN in_importProcessID VARCHAR(20)
 )
 BEGIN
   -- standard variables for processes
@@ -15,8 +15,8 @@ BEGIN
   DECLARE done BOOL DEFAULT false;
   DECLARE importProcessID INT UNSIGNED DEFAULT NULL;
   DECLARE importLoad_ID INT UNSIGNED DEFAULT NULL;
-  DECLARE records_processed INT DEFAULT 0;
-  DECLARE files_processed INT DEFAULT 1;
+  DECLARE recordsProcessed INT DEFAULT 0;
+  DECLARE filesProcessed INT DEFAULT 1;
   DECLARE processErrors INT DEFAULT 0;
   -- LOAD DATA staging table column variables
   DECLARE v_country_code VARCHAR(20) DEFAULT NULL;
@@ -58,19 +58,19 @@ BEGIN
       ROLLBACK;
     END;
   -- check parameters for valid values
-  IF CONVERT(in_importLoadID, UNSIGNED) = 0 AND in_importLoadID != 'ALL' THEN
-    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_importLoadID. Must be convert to number or be ALL';
+  IF CONVERT(in_importProcessID, UNSIGNED) = 0 AND in_importProcessID != 'ALL' THEN
+    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_importProcessID. Must be convert to number or be ALL';
   END IF;
   IF LENGTH(in_processName) < 6 THEN
     SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_processName. Must be minimum of 6 characters';
   END IF;
-  IF NOT CONVERT(in_importLoadID, UNSIGNED) = 0 THEN
+  IF NOT CONVERT(in_importProcessID, UNSIGNED) = 0 THEN
     SELECT importloadid 
       INTO importLoad_ID
       FROM import_process
-     WHERE id = in_importLoadID;
+     WHERE id = in_importProcessID;
   END IF;
-  SET importProcessID = importServerProcessID('normalize_client', in_processName, importLoad_ID);
+  SET importProcessID = importServerProcessID('normalize_client', in_processName, in_importProcessID );
   OPEN logClient;
   START TRANSACTION;
   process_normalize: LOOP
@@ -87,7 +87,7 @@ BEGIN
     IF done = true THEN
       LEAVE process_normalize;
     END IF;
-    SET records_processed = records_processed + 1;
+    SET recordsProcessed = recordsProcessed + 1;
     SET country_id = null,
         subdivision_id = null,
         city_id = null,
@@ -122,14 +122,14 @@ BEGIN
            networkid = network_id
      WHERE id = recid;
   END LOOP;
-  -- to remove SQL calculating files_processed when records_processed = 0. Set=1 by default.
-  IF records_processed=0 THEN
-    SET files_processed = 0;
+  -- to remove SQL calculating filesProcessed when recordsProcessed = 0. Set=1 by default.
+  IF recordsProcessed=0 THEN
+    SET filesProcessed = 0;
   END IF;
   -- update import process table
   UPDATE import_process
-     SET records_processed = records_processed,
-         files_processed = files_processed,
+     SET records_processed = recordsProcessed,
+         files_processed = filesProcessed,
          completed = now(),
          error_count = processErrors,
          process_seconds = TIME_TO_SEC(TIMEDIFF(now(), started))

@@ -68,16 +68,20 @@ ALTER TABLE `import_process` DROP FOREIGN KEY `F_import_process_server`;
 
 ALTER TABLE `import_load` DROP FOREIGN KEY `F_import_load_client`;
 
-ALTER TABLE `load_access_combined` DROP FOREIGN KEY `F_load_access_combined_import_file`;
-ALTER TABLE `load_access_csv` DROP FOREIGN KEY `F_load_access_csv2mysql_import_file`;
-ALTER TABLE `load_access_vhost` DROP FOREIGN KEY `F_load_access_vhost_import_file`;
-ALTER TABLE `load_error_apache` DROP FOREIGN KEY `F_load_error_apache_import_file`;
+ALTER TABLE `load_access_apache_combined` DROP FOREIGN KEY `F_load_access_apache_combined_file`;
+ALTER TABLE `load_access_apache_csv2mysql` DROP FOREIGN KEY `F_load_access_apache_csv2mysql_file`;
+ALTER TABLE `load_access_apache_vhost` DROP FOREIGN KEY `F_load_access_apache_vhost_file`;
+ALTER TABLE `load_error_apache_default` DROP FOREIGN KEY `F_load_error_apache_default_file`;
 
 -- indexes not needed and serve no purpose since each file would never have more than one value for process_status
 -- ALTER TABLE `load_access_combined` DROP INDEX `I_load_access_combined_import_process;
 -- ALTER TABLE `load_access_csv` DROP INDEX `I_load_access_csv2mysql_import_process;
 -- ALTER TABLE `load_access_vhost` DROP INDEX `I_load_access_vhost_import_process;
 -- ALTER TABLE `load_error_apache` DROP INDEX `I_load_error_apache_import_process;
+
+ALTER TABLE `load_access_nginx_default` DROP FOREIGN KEY `F_load_access_nginx_default_file`;
+ALTER TABLE `load_access_nginx_csv2mysql` DROP FOREIGN KEY `F_load_access_nginx_csv2mysql_file`;
+ALTER TABLE `load_error_nginx_default` DROP FOREIGN KEY `F_load_error_nginx_import_file`;
 
 -- UNIQUE Indexes
 DROP INDEX `U_log_client` ON `log_client`;
@@ -208,10 +212,14 @@ DROP INDEX `F_import_process_server` ON `import_process`;
 
 DROP INDEX `F_import_load_client` ON `import_load`;
 
-DROP INDEX `F_load_access_combined_import_file` ON `load_access_combined`;
-DROP INDEX `F_load_access_csv2mysql_import_file` ON `load_access_csv`;
-DROP INDEX `F_load_access_vhost_import_file` ON `load_access_vhost`;
-DROP INDEX `F_load_error_apache_import_file` ON `load_error_apache`;
+DROP INDEX `F_load_access_apache_combined_file` ON `load_access_apache_combined`;
+DROP INDEX `F_load_access_apache_csv2mysql_file` ON `load_access_apache_csv2mysql`;
+DROP INDEX `F_load_access_apache_vhost_file` ON `load_access_apache_vhost`;
+DROP INDEX `F_load_error_apache_default_file` ON `load_error_apache_default`;
+
+DROP INDEX `F_load_access_nginx_default_file` ON `load_access_nginx_default`;
+DROP INDEX `F_load_access_csv2mysql_import_file` ON `load_access_nginx_csv2mysql`;
+DROP INDEX `F_load_error_apache_import_file` ON `load_error_nginx_default`;
 
 -- Additional Indexes
 DROP INDEX `I_access_log_logged` ON `access_log`;
@@ -225,10 +233,10 @@ DROP INDEX `I_error_log_serverid_serverportid` ON `error_log`;
 DROP INDEX `I_error_log_clientid_clientportid` ON `error_log`;
 DROP INDEX `I_error_log_processid_threadid` ON `error_log`;
 
-DROP INDEX `I_load_access_combined_process` ON `load_access_combined`;
-DROP INDEX `I_load_access_csv2mysql_process` ON `load_access_csv`;
-DROP INDEX `I_load_access_vhost_process` ON `load_access_vhost`;
-DROP INDEX `I_load_error_apache_process` ON `load_error_apache`;
+DROP INDEX `I_load_access_combined_process` ON `load_access_apache_combined`;
+DROP INDEX `I_load_access_csv2mysql_process` ON `load_apache_access_csv2mysql`;
+DROP INDEX `I_load_access_vhost_process` ON `load_apache_access_vhost`;
+DROP INDEX `I_load_error_apache_process` ON `load_apache_error_apache`;
 
 -- indexes for parse and retrieve processes
 DROP INDEX `I_log_client_country_code` ON `log_client`;

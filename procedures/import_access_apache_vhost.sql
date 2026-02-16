@@ -5,7 +5,7 @@ DELIMITER //
 CREATE DEFINER = `root`@`localhost` PROCEDURE `import_access_apache_vhost`
 (
   IN in_processName VARCHAR(100),
-  IN in_importLoadID VARCHAR(20)
+  IN in_importProcessID VARCHAR(20)
 )
 BEGIN
   -- module_name_process = module_name column in import_process - to id procedure is being run
@@ -21,9 +21,9 @@ BEGIN
   DECLARE importRecordID INT UNSIGNED DEFAULT NULL;
   DECLARE importFileCheck_ID INT UNSIGNED DEFAULT NULL;
   DECLARE importFile_ID INT UNSIGNED DEFAULT NULL;
-  DECLARE records_processed INT DEFAULT 0;
-  DECLARE files_processed INT DEFAULT 0;
-  DECLARE loads_processed INT DEFAULT 1;
+  DECLARE recordsProcessed INT DEFAULT 0;
+  DECLARE filesProcessed INT DEFAULT 0;
+  DECLARE loadsProcessed INT DEFAULT 1;
   DECLARE processErrors INT DEFAULT 0;
   -- LOAD DATA staging table column variables
   DECLARE logTime VARCHAR(50) DEFAULT NULL;
@@ -144,28 +144,28 @@ BEGIN
     ROLLBACK;
   END;
   -- check parameters for valid values
-  IF CONVERT(in_importLoadID, UNSIGNED) = 0 AND in_importLoadID != 'ALL' THEN
-    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_importLoadID. Must be convert to number or be ALL';
+  IF CONVERT(in_importProcessID, UNSIGNED) = 0 AND in_importProcessID != 'ALL' THEN
+    SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_importProcessID. Must be convert to number or be ALL';
   END IF;
   IF FIND_IN_SET(in_processName, "python,mysql") = 0 THEN
     SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid parameter value for in_processName. Must be python OR mysql';
   END IF;
-  -- in_importLoadID has been set to zero or number passed.
+  -- in_importProcessID has been set to zero or number passed.
   -- to make sure parameter passed is INSERTED before procedure was called
-  IF NOT CONVERT(in_importLoadID, UNSIGNED) = 0 THEN
+  IF NOT CONVERT(in_importProcessID, UNSIGNED) = 0 THEN
     SELECT importloadid 
       INTO importLoad_ID
       FROM import_process
-     WHERE id = in_importLoadID;
+     WHERE id = in_importProcessID;
   END IF;
   -- if procedure call from Python App importload_ID > 0 and import_process record already inserted.
   -- importServerProcessID() SETs importserverid to serverid and return ID
   -- if importload_ID = 0 import_process INSERT and return ID
-  SET importProcessID = importServerProcessID( module_name_process, in_processName, importLoad_ID);
+  SET importProcessID = importServerProcessID( module_name_process, in_processName, in_importProcessID );
   -- check if files from multiple main:process_files
   IF importLoad_ID IS NULL THEN
         SELECT COUNT(DISTINCT(f.importloadid))
-          INTO loads_processed
+          INTO loadsProcessed
           FROM load_access_apache_vhost l
     INNER JOIN import_file f
             ON l.importfileid = f.id
@@ -192,7 +192,7 @@ BEGIN
       ROLLBACK;
       LEAVE process_import_file;
     END IF;
-    SET files_processed = files_processed + 1;
+    SET filesProcessed = filesProcessed + 1;
   END LOOP process_import_file;
   IF importLoad_ID IS NULL THEN
     CLOSE vhostStatusFile;
@@ -251,7 +251,7 @@ BEGIN
     IF done = true THEN
       LEAVE process_import;
     END IF;
-    SET records_processed = records_processed + 1;
+    SET recordsProcessed = recordsProcessed + 1;
     SET remoteLogName_Id = null,
         remoteUser_Id = null,
         reqStatus_Id = null,
@@ -391,15 +391,15 @@ BEGIN
     -- update file record in load table
     UPDATE load_access_apache_vhost SET process_status=2 WHERE id=importRecordID;
   END LOOP process_import;
-  -- to remove SQL calculating loads_processed when importLoad_ID is passed. Set=1 by default.
-  IF importLoad_ID IS NOT NULL AND records_processed=0 THEN
-    SET loads_processed = 0;
+  -- to remove SQL calculating loadsProcessed when importLoad_ID is passed. Set=1 by default.
+  IF importLoad_ID IS NOT NULL AND recordsProcessed=0 THEN
+    SET loadsProcessed = 0;
   END IF;
   -- update import server process table
   UPDATE import_process
-     SET records_processed = records_processed,
-         files_processed = files_processed,
-         loads_processed = loads_processed,
+     SET records_processed = recordsProcessed,
+         files_processed = filesProcessed,
+         loads_processed = loadsProcessed,
          completed = now(),
          error_count = processErrors,
          module_name = module_name_process,
