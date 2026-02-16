@@ -1,11 +1,11 @@
 ## Database designed for HTTP log data analysis
-Ingest years of Apache & NGINX log files into a fully-normalized database. IP Geolocation & User-Agent data integration. Automate processing files from multiple domains & servers. Small codebase & simple setup. The only relational database solution!
+Ingest years of Apache & NGINX log files into a fully-normalized database. IP Geolocation & User-Agent data integration. 
 
 ![Entity Relationship Diagram](./images/entity_relationship_diagram.png)
 ## DDL for tables, indexes, views, function, procedures & constraints
 All SQL files and Python build file used in schema database application development is here. Individual Function and Procedure files make applying modifications much simpler in Visual Studio Code.
 
-The Python build script assembles all SQL script files together into the single `create_http_logs.sql` file that is included in repository [logFiles2MySQL](https://github.com/willthefarmer/http-logs-to-mysql) repository.
+The Python build script assembles all SQL script files together into the single `create_http_logs.sql` file that is included in repository [files-to-mysql](https://github.com/willthefarmer/files-to-mysql) repository.
 
 ### 1. NGINX formats and procedural code
 From documentation read NGINX standard access logformat is same as Apache combined. I have not verified by examining NGINX data yet.
